@@ -13,7 +13,7 @@ class Collection;
 namespace tp_pipeline
 {
 struct StepInput;
-struct StepDetails;
+class StepDetails;
 
 //##################################################################################################
 class AbstractStepDelegate

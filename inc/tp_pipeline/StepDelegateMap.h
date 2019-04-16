@@ -3,6 +3,8 @@
 
 #include "tp_pipeline/Globals.h"
 
+#include <unordered_map>
+
 namespace tp_pipeline
 {
 class AbstractStepDelegate;

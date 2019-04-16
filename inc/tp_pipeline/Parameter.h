@@ -8,6 +8,7 @@
 #include "base64.h"
 
 #include <variant>
+#include <unordered_map>
 
 namespace tp_pipeline
 {
