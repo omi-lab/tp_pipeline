@@ -11,10 +11,7 @@ AbstractComplexObject::AbstractComplexObject(const tp_utils::StringID& type):
 }
 
 //##################################################################################################
-AbstractComplexObject::~AbstractComplexObject()
-{
-
-}
+AbstractComplexObject::~AbstractComplexObject() = default;
 
 //##################################################################################################
 tp_utils::StringID AbstractComplexObject::type()const

@@ -70,58 +70,58 @@ PipelineDetails* StepDetails::parent()const
   return d->parent;
 }
 
-//##################################################################################################
-nlohmann::json StepDetails::save() noexcept
-{
-  nlohmann::json j;
+////##################################################################################################
+//nlohmann::json StepDetails::save() noexcept
+//{
+//  nlohmann::json j;
 
-  j["Delegate"] = d->delegateName.keyString();
+//  j["Delegate"] = d->delegateName.keyString();
 
-  j["Parameters"] = nlohmann::json::array();
-  for(const auto& i : d->parameters)
-    j["Parameters"].push_back(i.second.save());
+//  j["Parameters"] = nlohmann::json::array();
+//  for(const auto& i : d->parameters)
+//    j["Parameters"].push_back(i.second.save());
 
-  j["Parameters order"] = nlohmann::json::array();
-  for(const auto& i : d->parametersOrder)
-    j["Parameters order"].push_back(i.keyString());
+//  j["Parameters order"] = nlohmann::json::array();
+//  for(const auto& i : d->parametersOrder)
+//    j["Parameters order"].push_back(i.keyString());
 
-  j["Complex objects"] = complexObjectManager.save();
+//  j["Complex objects"] = complexObjectManager.save();
 
-  j["Output mapping"] = nlohmann::json::array();
-  for(const auto& i : d->outputMapping)
-    j["Output mapping"].push_back({{"src", i.first}, {"dst", i.second}});
+//  j["Output mapping"] = nlohmann::json::array();
+//  for(const auto& i : d->outputMapping)
+//    j["Output mapping"].push_back({{"src", i.first}, {"dst", i.second}});
 
-  return j;
-}
+//  return j;
+//}
 
-//##################################################################################################
-void StepDetails::load(const nlohmann::json& j) noexcept
-{
-  d->delegateName = tp_utils::getJSONValue<std::string>(j, "Delegate", "None");
+////##################################################################################################
+//void StepDetails::load(const nlohmann::json& j) noexcept
+//{
+//  d->delegateName = tp_utils::getJSONValue<std::string>(j, "Delegate", "None");
 
-  d->parameters.clear();
-  for(Parameter parameter : tp_utils::getJSONValue(j, "Parameters", nlohmann::json::array()))
-    if(parameter.name.isValid())
-      d->parameters[parameter.name] = parameter;
+//  d->parameters.clear();
+//  for(Parameter parameter : tp_utils::getJSONValue(j, "Parameters", nlohmann::json::array()))
+//    if(parameter.name.isValid())
+//      d->parameters[parameter.name] = parameter;
 
-  d->parametersOrder.clear();
-  for(tp_utils::StringID name : tp_utils::getJSONStringList(j, "Parameters order"))
-    if(name.isValid())
-      d->parametersOrder.push_back(name);
+//  d->parametersOrder.clear();
+//  for(tp_utils::StringID name : tp_utils::getJSONStringList(j, "Parameters order"))
+//    if(name.isValid())
+//      d->parametersOrder.push_back(name);
 
-  complexObjectManager.load(tp_utils::getJSONValue(j, "Complex objects", nlohmann::json::array()));
+//  complexObjectManager.load(tp_utils::getJSONValue(j, "Complex objects", nlohmann::json::array()));
 
-  d->outputMapping.clear();
-  for(const auto& i: tp_utils::getJSONValue(j, "Output mapping", nlohmann::json::array()))
-  {
-    std::string src = i.value("src", std::string());
-    std::string dst = i.value("dst", std::string());
-    if(!src.empty() && !dst.empty())
-      d->outputMapping.push_back({src, dst});
-  }
+//  d->outputMapping.clear();
+//  for(const auto& i: tp_utils::getJSONValue(j, "Output mapping", nlohmann::json::array()))
+//  {
+//    std::string src = i.value("src", std::string());
+//    std::string dst = i.value("dst", std::string());
+//    if(!src.empty() && !dst.empty())
+//      d->outputMapping.push_back({src, dst});
+//  }
 
-  invalidate();
-}
+//  invalidate();
+//}
 
 //##################################################################################################
 nlohmann::json StepDetails::saveBinary(const std::function<uint64_t(const std::string&)>& addBlob) noexcept
@@ -140,7 +140,7 @@ nlohmann::json StepDetails::saveBinary(const std::function<uint64_t(const std::s
   for(const auto& i : d->parametersOrder)
     j["Parameters order"].push_back(i.keyString());
 
-  j["Complex objects"] = complexObjectManager.save();
+  j["Complex objects"] = complexObjectManager.saveBinary(addBlob);
 
   j["Output mapping"] = nlohmann::json::array();
   for(const auto& i : d->outputMapping)
@@ -167,7 +167,7 @@ void StepDetails::loadBinary(const nlohmann::json& j, const std::vector<std::str
     if(name.isValid())
       d->parametersOrder.push_back(name);
 
-  complexObjectManager.load(tp_utils::getJSONValue(j, "Complex objects", nlohmann::json::array()));
+  complexObjectManager.loadBinary(tp_utils::getJSONValue(j, "Complex objects", nlohmann::json::array()), blobs);
 
   d->outputMapping.clear();
   for(const auto& i: tp_utils::getJSONValue(j, "Output mapping", nlohmann::json::array()))

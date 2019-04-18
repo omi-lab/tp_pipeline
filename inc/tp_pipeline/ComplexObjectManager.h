@@ -31,11 +31,11 @@ public:
 
   //################################################################################################
   //! Saves the state of a step
-  nlohmann::json save()noexcept;
+  nlohmann::json saveBinary(const std::function<uint64_t(const std::string&)>& addBlob) const noexcept;
 
   //################################################################################################
   //! loads the state of a step
-  void load(const nlohmann::json& j)noexcept;
+  void loadBinary(const nlohmann::json& j, const std::vector<std::string>& blobs) noexcept;
 
   //################################################################################################
   void clearComplexObjects();

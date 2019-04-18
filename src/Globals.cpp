@@ -21,6 +21,7 @@ TDP_DEFINE_ID(                   binaryDataSID,                      "Binary dat
 TDP_DEFINE_ID(            convolutionMatrixSID,               "Convolution matrix")
 TDP_DEFINE_ID(                fileDirectorySID,                   "File directory")
 TDP_DEFINE_ID(                    fileIndexSID,                       "File index")
+TDP_DEFINE_ID(                   collectionSID,                       "Collection")
 
 //##################################################################################################
 void createStepDelegates(StepDelegateMap& stepDelegates)

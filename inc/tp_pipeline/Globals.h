@@ -23,6 +23,7 @@ TDP_DECLARE_ID(                   binaryDataSID,                      "Binary da
 TDP_DECLARE_ID(            convolutionMatrixSID,               "Convolution matrix")
 TDP_DECLARE_ID(                fileDirectorySID,                   "File directory")
 TDP_DECLARE_ID(                    fileIndexSID,                       "File index")
+TDP_DECLARE_ID(                   collectionSID,                       "Collection")
 
 //##################################################################################################
 //! Add the step delegates that this module provides to the StepDelegateMap

@@ -26,7 +26,7 @@ public:
   tp_utils::StringID type()const;
 
   //################################################################################################
-  virtual nlohmann::json save()const=0;
+  virtual nlohmann::json saveBinary(const std::function<uint64_t(const std::string&)>& addBlob) const=0;
 
   //################################################################################################
   virtual AbstractComplexObject* clone()const=0;

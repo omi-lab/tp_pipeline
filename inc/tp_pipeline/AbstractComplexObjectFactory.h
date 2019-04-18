@@ -7,6 +7,7 @@
 
 namespace tp_pipeline
 {
+class AbstractComplexObject;
 
 //##################################################################################################
 class AbstractComplexObjectFactory
@@ -18,13 +19,13 @@ public:
   AbstractComplexObjectFactory() = default;
 
   //################################################################################################
-  virtual ~AbstractComplexObjectFactory() = default;
+  virtual ~AbstractComplexObjectFactory();
 
   //################################################################################################
   virtual AbstractComplexObject* create()const=0;
 
   //################################################################################################
-  virtual AbstractComplexObject* load(const nlohmann::json& j)const=0;
+  virtual AbstractComplexObject* loadBinary(const nlohmann::json& j, const std::vector<std::string>& blobs)=0;
 };
 
 }

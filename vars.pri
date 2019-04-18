@@ -40,3 +40,8 @@ HEADERS += inc/tp_pipeline/StepDelegateMap.h
 
 SOURCES += src/step_delegates/NoneStepDelegate.cpp
 HEADERS += inc/tp_pipeline/step_delegates/NoneStepDelegate.h
+
+#-- Complex objects --------------------------------------------------------------------------------
+
+SOURCES += src/complex_objects/CollectionComplexObject.cpp
+HEADERS += inc/tp_pipeline/complex_objects/CollectionComplexObject.h
