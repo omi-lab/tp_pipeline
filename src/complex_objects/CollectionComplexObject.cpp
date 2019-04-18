@@ -9,7 +9,7 @@ namespace tp_pipeline
 {
 
 //##################################################################################################
-CollectionComplexObject::CollectionComplexObject(tp_data::CollectionFactory* collectionFactory):
+CollectionComplexObject::CollectionComplexObject(const tp_data::CollectionFactory* collectionFactory):
   AbstractComplexObject(collectionSID()),
   m_collectionFactory(collectionFactory)
 {
@@ -42,7 +42,7 @@ AbstractComplexObject* CollectionComplexObject::clone() const
   return obj;
 }
 //##################################################################################################
-CollectionComplexObjectFactory::CollectionComplexObjectFactory(tp_data::CollectionFactory* collectionFactory):
+CollectionComplexObjectFactory::CollectionComplexObjectFactory(const tp_data::CollectionFactory* collectionFactory):
   m_collectionFactory(collectionFactory)
 {
 

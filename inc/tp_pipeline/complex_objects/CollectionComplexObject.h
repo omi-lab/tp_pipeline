@@ -16,7 +16,7 @@ class CollectionComplexObject: public AbstractComplexObject
 {
 public:
   //################################################################################################
-  CollectionComplexObject(tp_data::CollectionFactory* collectionFactory);
+  CollectionComplexObject(const tp_data::CollectionFactory* collectionFactory);
 
   //################################################################################################
   ~CollectionComplexObject() override;
@@ -30,7 +30,7 @@ public:
   std::shared_ptr<tp_data::Collection> data;
 
 private:
-  tp_data::CollectionFactory* m_collectionFactory;
+  const tp_data::CollectionFactory* m_collectionFactory;
 };
 
 //##################################################################################################
@@ -38,7 +38,7 @@ class CollectionComplexObjectFactory: public AbstractComplexObjectFactory
 {
 public:
   //################################################################################################
-  CollectionComplexObjectFactory(tp_data::CollectionFactory* collectionFactory);
+  CollectionComplexObjectFactory(const tp_data::CollectionFactory* collectionFactory);
 
   //################################################################################################
   AbstractComplexObject* create() const override;
@@ -47,7 +47,7 @@ public:
   AbstractComplexObject* loadBinary(const nlohmann::json& j, const std::vector<std::string>& blobs) override;
 
 private:
-  tp_data::CollectionFactory* m_collectionFactory;
+  const tp_data::CollectionFactory* m_collectionFactory;
 };
 
 }
