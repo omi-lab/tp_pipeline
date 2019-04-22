@@ -27,7 +27,11 @@ nlohmann::json CollectionComplexObject::saveBinary(const std::function<uint64_t(
   std::string error;
   std::string binaryData;
   if(data)
+  {
     m_collectionFactory->saveToData(error, *data, binaryData);
+    if(!error.empty())
+      tpWarning() << "CollectionComplexObject::saveBinary Error: " << error;
+  }
 
   j["index"] = addBlob(binaryData);
 
