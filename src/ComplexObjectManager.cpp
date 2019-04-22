@@ -3,6 +3,7 @@
 #include "tp_pipeline/AbstractComplexObjectFactory.h"
 
 #include "tp_utils/JSONUtils.h"
+#include "tp_utils/DebugUtils.h"
 
 namespace tp_pipeline
 {
@@ -87,7 +88,7 @@ void ComplexObjectManager::loadBinary(const nlohmann::json& j, const std::vector
   clearComplexObjects();
 
   if(auto blobIndex = TPJSON(j, "blobIndex"); blobIndex.is_array())
-    for(const auto& jj : j)
+    for(const auto& jj : blobIndex)
       if(auto index = TPJSONSizeT(jj, "index"); index<blobs.size())
         d->complexObjectsBlobs[TPJSONString(jj, "name")].push_back(blobs.at(index));
 

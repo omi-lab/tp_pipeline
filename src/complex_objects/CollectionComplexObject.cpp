@@ -1,6 +1,7 @@
 #include "tp_pipeline/complex_objects/CollectionComplexObject.h"
 
 #include "tp_data/CollectionFactory.h"
+#include "tp_data/AbstractMember.h"
 
 #include "tp_utils/JSONUtils.h"
 #include "tp_utils/DebugUtils.h"
