@@ -3,6 +3,11 @@
 
 #include "tp_utils/StringID.h"
 
+namespace tp_data
+{
+class CollectionFactory;
+}
+
 //##################################################################################################
 //! A pipeline for data processing.
 namespace tp_pipeline
@@ -27,7 +32,23 @@ TDP_DECLARE_ID(                   collectionSID,                       "Collecti
 
 //##################################################################################################
 //! Add the step delegates that this module provides to the StepDelegateMap
-void createStepDelegates(StepDelegateMap& stepDelegates);
+void createStepDelegates(StepDelegateMap& stepDelegates, const tp_data::CollectionFactory* collectionFactory);
+
+//##################################################################################################
+std::vector<std::function<void(StepDelegateMap&, const tp_data::CollectionFactory*)>>& createStepDelegatesRegister();
+
+//##################################################################################################
+//! Add this namspaces createCollectionFactories method to the global register.
+#define REGISTER_CREATE_STEP_DELEGATES \
+namespace \
+{ \
+  extern char createStepDelegates_reg; \
+  char createStepDelegates_reg = [] \
+  { \
+    tp_pipeline::createStepDelegatesRegister().push_back(createStepDelegates); \
+    return 0; \
+  }(); \
+}
 
 //##################################################################################################
 //! Sets the input directory for a sequence of steps
@@ -38,6 +59,10 @@ This will look for the first that has a "File directory" parameter and set it.
 \param directory - The input directory
 */
 void setInputDirectory(const std::vector<StepDetails*>& steps, const std::string& directory);
+
+//##################################################################################################
+//! Static initialization of this module, see TP_STATIC_INIT in dependencies.pri
+int staticInit();
 
 }
 

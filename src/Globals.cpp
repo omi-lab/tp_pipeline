@@ -24,9 +24,17 @@ TDP_DEFINE_ID(                    fileIndexSID,                       "File inde
 TDP_DEFINE_ID(                   collectionSID,                       "Collection")
 
 //##################################################################################################
-void createStepDelegates(StepDelegateMap& stepDelegates)
+void createStepDelegates(StepDelegateMap& stepDelegates, const tp_data::CollectionFactory* collectionFactory)
 {
+  TP_UNUSED(collectionFactory);
   stepDelegates.addStepDelegate(new NoneStepDelegate);
+}
+
+//##################################################################################################
+std::vector<std::function<void(StepDelegateMap&, const tp_data::CollectionFactory*)>>& createStepDelegatesRegister()
+{
+  static std::vector<std::function<void(StepDelegateMap&, const tp_data::CollectionFactory*)>> createStepDelegatesRegister;
+  return createStepDelegatesRegister;
 }
 
 //##################################################################################################
@@ -45,6 +53,14 @@ void setInputDirectory(const std::vector<StepDetails*>& steps, const std::string
       break;
     }
   }
+}
+
+REGISTER_CREATE_STEP_DELEGATES;
+
+//##################################################################################################
+int staticInit()
+{
+  return 0;
 }
 
 }
