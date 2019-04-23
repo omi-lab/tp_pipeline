@@ -44,15 +44,12 @@ std::vector<std::function<void(StepDelegateMap&, const tp_data::CollectionFactor
 //##################################################################################################
 //! Add this namspaces createCollectionFactories method to the global register.
 #define REGISTER_CREATE_STEP_DELEGATES \
-namespace \
+extern char createStepDelegates_reg; \
+char createStepDelegates_reg = [] \
 { \
-  extern char createStepDelegates_reg; \
-  char createStepDelegates_reg = [] \
-  { \
-    tp_pipeline::createStepDelegatesRegister().push_back(createStepDelegates); \
-    return 0; \
-  }(); \
-}
+  tp_pipeline::createStepDelegatesRegister().push_back(createStepDelegates); \
+  return 0; \
+}()
 
 //##################################################################################################
 //! Sets the input directory for a sequence of steps
