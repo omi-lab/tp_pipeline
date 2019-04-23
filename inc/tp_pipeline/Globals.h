@@ -35,6 +35,10 @@ TDP_DECLARE_ID(                   collectionSID,                       "Collecti
 void createStepDelegates(StepDelegateMap& stepDelegates, const tp_data::CollectionFactory* collectionFactory);
 
 //##################################################################################################
+//! Add all step delegates that have been registered to the StepDelegateMap
+void createAllStepDelegates(StepDelegateMap& stepDelegates, const tp_data::CollectionFactory* collectionFactory);
+
+//##################################################################################################
 std::vector<std::function<void(StepDelegateMap&, const tp_data::CollectionFactory*)>>& createStepDelegatesRegister();
 
 //##################################################################################################

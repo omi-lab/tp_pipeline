@@ -31,7 +31,14 @@ void createStepDelegates(StepDelegateMap& stepDelegates, const tp_data::Collecti
 }
 
 //##################################################################################################
-std::vector<std::function<void(StepDelegateMap&, const tp_data::CollectionFactory*)>>& createStepDelegatesRegister()
+void createAllStepDelegates(StepDelegateMap& stepDelegates, const tp_data::CollectionFactory* collectionFactory)
+{
+  for(const auto& createStepDelegates : tp_pipeline::createStepDelegatesRegister())
+    createStepDelegates(stepDelegates, collectionFactory);
+}
+
+//##################################################################################################
+std::vector<std::function<void(StepDelegateMap&, const tp_data::CollectionFactory*) > > & createStepDelegatesRegister()
 {
   static std::vector<std::function<void(StepDelegateMap&, const tp_data::CollectionFactory*)>> createStepDelegatesRegister;
   return createStepDelegatesRegister;
