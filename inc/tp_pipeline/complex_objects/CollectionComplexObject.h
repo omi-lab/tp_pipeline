@@ -44,7 +44,7 @@ public:
   AbstractComplexObject* create() const override;
 
   //################################################################################################
-  AbstractComplexObject* loadBinary(const nlohmann::json& j, const std::vector<std::string>& blobs) override;
+  AbstractComplexObject* loadBinary(const nlohmann::json& j, const std::vector<std::string>& blobs) const override;
 
 private:
   const tp_data::CollectionFactory* m_collectionFactory;

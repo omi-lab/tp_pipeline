@@ -5,6 +5,8 @@
 
 #include "tp_pipeline/step_delegates/NoneStepDelegate.h"
 
+#include "tp_data/CollectionFactory.h"
+
 //##################################################################################################
 namespace tp_pipeline
 {
@@ -33,6 +35,9 @@ void createStepDelegates(StepDelegateMap& stepDelegates, const tp_data::Collecti
 //##################################################################################################
 void createAllStepDelegates(StepDelegateMap& stepDelegates, const tp_data::CollectionFactory* collectionFactory)
 {
+  if(!collectionFactory->finalized())
+    tpWarning() << "createAllStepDelegates Error: The collection factory should be finalized!";
+
   for(const auto& createStepDelegates : tp_pipeline::createStepDelegatesRegister())
     createStepDelegates(stepDelegates, collectionFactory);
 }

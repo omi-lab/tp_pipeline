@@ -22,10 +22,10 @@ public:
   virtual ~AbstractComplexObjectFactory();
 
   //################################################################################################
-  virtual AbstractComplexObject* create()const=0;
+  virtual AbstractComplexObject* create() const=0;
 
   //################################################################################################
-  virtual AbstractComplexObject* loadBinary(const nlohmann::json& j, const std::vector<std::string>& blobs)=0;
+  virtual AbstractComplexObject* loadBinary(const nlohmann::json& j, const std::vector<std::string>& blobs) const=0;
 };
 
 }

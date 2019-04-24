@@ -60,7 +60,7 @@ AbstractComplexObject* CollectionComplexObjectFactory::create() const
 }
 
 //##################################################################################################
-AbstractComplexObject* CollectionComplexObjectFactory::loadBinary(const nlohmann::json& j, const std::vector<std::string>& blobs)
+AbstractComplexObject* CollectionComplexObjectFactory::loadBinary(const nlohmann::json& j, const std::vector<std::string>& blobs) const
 {
   auto obj = new CollectionComplexObject(m_collectionFactory);
   obj->data = std::make_shared<tp_data::Collection>();
