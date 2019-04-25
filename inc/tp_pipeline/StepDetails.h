@@ -57,14 +57,6 @@ public:
   //! Returns the pipeline that this step is part of or nullptr.
   PipelineDetails* parent()const;
 
-//  //################################################################################################
-//  //! Saves the state of a step
-//  nlohmann::json save()noexcept;
-
-//  //################################################################################################
-//  //! loads the state of a step
-//  void load(const nlohmann::json& j)noexcept;
-
   //################################################################################################
   //! Saves the state of a step
   nlohmann::json saveBinary(const std::function<uint64_t(const std::string&)>& addBlob)noexcept;
