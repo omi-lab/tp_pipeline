@@ -7,6 +7,8 @@
 
 #include "tp_data/CollectionFactory.h"
 
+#include "tp_utils/DebugUtils.h"
+
 //##################################################################################################
 namespace tp_pipeline
 {
