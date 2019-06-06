@@ -121,4 +121,12 @@ std::unordered_map<tp_utils::StringID, tp_pipeline::Parameter> Parameter::loadHa
   return paramHash;
 }
 
+//##################################################################################################
+void Parameter::setNamedData()
+{
+  type = tp_pipeline::namedDataSID();
+  if(value.index() == 0)
+    value = std::string("Output data");
+}
+
 }

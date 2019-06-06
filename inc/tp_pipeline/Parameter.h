@@ -107,6 +107,17 @@ struct Parameter
        !validValues.empty())
       value = validValues.at(0);
   }
+
+  //################################################################################################
+  template<typename T>
+  void setInitial(const T& initial=T())
+  {
+    if(value.index() == 0)
+      value = initial;
+  }
+
+  //################################################################################################
+  void setNamedData();
 };
 
 template <typename T>
