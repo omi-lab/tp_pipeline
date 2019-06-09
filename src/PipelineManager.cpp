@@ -353,4 +353,14 @@ PipelineDetails* PipelineManager::pipelineDetails()
   return d->pipelineDetails;
 }
 
+//##################################################################################################
+std::vector<std::shared_ptr<tp_data::Collection>> PipelineManager::cachedState() const
+{
+  std::vector<std::shared_ptr<tp_data::Collection>> results;
+  for(const auto& i : d->cachedState)
+    if(i.results)
+      results.push_back(i.results);
+  return results;
+}
+
 }

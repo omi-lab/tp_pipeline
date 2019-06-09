@@ -88,6 +88,9 @@ public:
   //! Returns the pipeline
   PipelineDetails* pipelineDetails();
 
+  //################################################################################################
+  std::vector<std::shared_ptr<tp_data::Collection>> cachedState() const;
+
 private:
   struct Private;
   Private* d;
