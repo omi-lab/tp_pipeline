@@ -65,7 +65,7 @@ AbstractComplexObject* CollectionComplexObjectFactory::loadBinary(const nlohmann
   auto obj = new CollectionComplexObject(m_collectionFactory);
   obj->data = std::make_shared<tp_data::Collection>();
 
-  size_t index = TPJSONSizeT(j, "index");
+  auto index = TPJSONSizeT(j, "index");
   if(index<blobs.size())
   {
     const std::string& data = blobs.at(index);

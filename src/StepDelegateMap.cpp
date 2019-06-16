@@ -5,10 +5,7 @@ namespace tp_pipeline
 {
 
 //##################################################################################################
-StepDelegateMap::StepDelegateMap()
-{
-
-}
+StepDelegateMap::StepDelegateMap() = default;
 
 //##################################################################################################
 StepDelegateMap::~StepDelegateMap()

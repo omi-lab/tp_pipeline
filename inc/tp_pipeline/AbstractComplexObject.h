@@ -11,13 +11,12 @@ namespace tp_pipeline
 //##################################################################################################
 class AbstractComplexObject
 {
+  TP_NONCOPYABLE(AbstractComplexObject);
   tp_utils::StringID m_type;
-  AbstractComplexObject( const AbstractComplexObject& ) = delete;
-  AbstractComplexObject& operator=(const AbstractComplexObject&) = delete;
 public:
 
   //################################################################################################
-  AbstractComplexObject(const tp_utils::StringID& type);
+  AbstractComplexObject(tp_utils::StringID type);
 
   //################################################################################################
   virtual ~AbstractComplexObject();

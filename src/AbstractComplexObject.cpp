@@ -4,8 +4,8 @@ namespace tp_pipeline
 {
 
 //##################################################################################################
-AbstractComplexObject::AbstractComplexObject(const tp_utils::StringID& type):
-  m_type(type)
+AbstractComplexObject::AbstractComplexObject(tp_utils::StringID type):
+  m_type(std::move(type))
 {
 
 }

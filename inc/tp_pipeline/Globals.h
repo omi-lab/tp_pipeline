@@ -47,7 +47,7 @@ std::vector<std::function<void(StepDelegateMap&, const tp_data::CollectionFactor
 extern char createStepDelegates_reg; \
 char createStepDelegates_reg = [] \
 { \
-  tp_pipeline::createStepDelegatesRegister().push_back(createStepDelegates); \
+  tp_pipeline::createStepDelegatesRegister().emplace_back(createStepDelegates); \
   return 0; \
 }()
 

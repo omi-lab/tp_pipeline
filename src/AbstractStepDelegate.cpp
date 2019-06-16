@@ -9,10 +9,10 @@ struct AbstractStepDelegate::Private
   const std::vector<tp_utils::StringID> groups;
 
   //################################################################################################
-  Private(const tp_utils::StringID& name_,
-          const std::vector<tp_utils::StringID>& groups_):
-    name(name_),
-    groups(groups_)
+  Private(tp_utils::StringID name_,
+          std::vector<tp_utils::StringID> groups_):
+    name(std::move(name_)),
+    groups(std::move(groups_))
   {
 
   }
