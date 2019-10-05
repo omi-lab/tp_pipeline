@@ -27,7 +27,7 @@ will be used to execute the step.
  */
 class StepDetails
 {
-  TDP_REF_COUNT_OBJECTS("StepDetails");
+  tp_qt_REF_COUNT_OBJECTS("StepDetails");
   StepDetails& operator=(const StepDetails&) = delete;
 public:
   //################################################################################################

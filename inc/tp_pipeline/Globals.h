@@ -15,20 +15,20 @@ namespace tp_pipeline
 class StepDelegateMap;
 class StepDetails;
 
-TDP_DECLARE_ID(                         noneSID,                             "None");
-TDP_DECLARE_ID(                          intSID,                              "Int");
-TDP_DECLARE_ID(                         sizeSID,                             "Size");
-TDP_DECLARE_ID(                        floatSID,                            "Float");
-TDP_DECLARE_ID(                       doubleSID,                           "Double");
-TDP_DECLARE_ID(                         enumSID,                             "Enum");
-TDP_DECLARE_ID(                    namedDataSID,                       "Named data");
-TDP_DECLARE_ID(                    directorySID,                        "Directory");
-TDP_DECLARE_ID(                       stringSID,                           "String");
-TDP_DECLARE_ID(                   binaryDataSID,                      "Binary data");
-TDP_DECLARE_ID(            convolutionMatrixSID,               "Convolution matrix");
-TDP_DECLARE_ID(                fileDirectorySID,                   "File directory");
-TDP_DECLARE_ID(                    fileIndexSID,                       "File index");
-TDP_DECLARE_ID(                   collectionSID,                       "Collection");
+tp_qt_DECLARE_ID(                         noneSID,                             "None");
+tp_qt_DECLARE_ID(                          intSID,                              "Int");
+tp_qt_DECLARE_ID(                         sizeSID,                             "Size");
+tp_qt_DECLARE_ID(                        floatSID,                            "Float");
+tp_qt_DECLARE_ID(                       doubleSID,                           "Double");
+tp_qt_DECLARE_ID(                         enumSID,                             "Enum");
+tp_qt_DECLARE_ID(                    namedDataSID,                       "Named data");
+tp_qt_DECLARE_ID(                    directorySID,                        "Directory");
+tp_qt_DECLARE_ID(                       stringSID,                           "String");
+tp_qt_DECLARE_ID(                   binaryDataSID,                      "Binary data");
+tp_qt_DECLARE_ID(            convolutionMatrixSID,               "Convolution matrix");
+tp_qt_DECLARE_ID(                fileDirectorySID,                   "File directory");
+tp_qt_DECLARE_ID(                    fileIndexSID,                       "File index");
+tp_qt_DECLARE_ID(                   collectionSID,                       "Collection");
 
 //##################################################################################################
 //! Add the step delegates that this module provides to the StepDelegateMap
