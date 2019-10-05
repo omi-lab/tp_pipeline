@@ -12,20 +12,20 @@
 //##################################################################################################
 namespace tp_pipeline
 {
-tp_qt_DEFINE_ID(                         noneSID,                             "None");
-tp_qt_DEFINE_ID(                          intSID,                              "Int");
-tp_qt_DEFINE_ID(                         sizeSID,                             "Size");
-tp_qt_DEFINE_ID(                        floatSID,                            "Float");
-tp_qt_DEFINE_ID(                       doubleSID,                           "Double");
-tp_qt_DEFINE_ID(                         enumSID,                             "Enum");
-tp_qt_DEFINE_ID(                    namedDataSID,                       "Named data");
-tp_qt_DEFINE_ID(                    directorySID,                        "Directory");
-tp_qt_DEFINE_ID(                       stringSID,                           "String");
-tp_qt_DEFINE_ID(                   binaryDataSID,                      "Binary data");
-tp_qt_DEFINE_ID(            convolutionMatrixSID,               "Convolution matrix");
-tp_qt_DEFINE_ID(                fileDirectorySID,                   "File directory");
-tp_qt_DEFINE_ID(                    fileIndexSID,                       "File index");
-tp_qt_DEFINE_ID(                   collectionSID,                       "Collection");
+TP_DEFINE_ID(                         noneSID,                             "None");
+TP_DEFINE_ID(                          intSID,                              "Int");
+TP_DEFINE_ID(                         sizeSID,                             "Size");
+TP_DEFINE_ID(                        floatSID,                            "Float");
+TP_DEFINE_ID(                       doubleSID,                           "Double");
+TP_DEFINE_ID(                         enumSID,                             "Enum");
+TP_DEFINE_ID(                    namedDataSID,                       "Named data");
+TP_DEFINE_ID(                    directorySID,                        "Directory");
+TP_DEFINE_ID(                       stringSID,                           "String");
+TP_DEFINE_ID(                   binaryDataSID,                      "Binary data");
+TP_DEFINE_ID(            convolutionMatrixSID,               "Convolution matrix");
+TP_DEFINE_ID(                fileDirectorySID,                   "File directory");
+TP_DEFINE_ID(                    fileIndexSID,                       "File index");
+TP_DEFINE_ID(                   collectionSID,                       "Collection");
 
 //##################################################################################################
 void createStepDelegates(StepDelegateMap& stepDelegates, const tp_data::CollectionFactory* collectionFactory)

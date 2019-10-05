@@ -10,7 +10,7 @@ namespace tp_pipeline
 //##################################################################################################
 struct PipelineDetails::Private
 {
-  tp_qt_REF_COUNT_OBJECTS("PipelineDetails");
+  TP_REF_COUNT_OBJECTS("PipelineDetails");
   PipelineDetails* q;
 
   std::vector<StepDetails*> steps;
