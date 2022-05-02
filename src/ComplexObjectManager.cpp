@@ -65,16 +65,16 @@ nlohmann::json ComplexObjectManager::saveBinary(const std::function<uint64_t(con
 
   for(const auto& i : d->complexObjects)
   {
-    currentObjectName = i.first.keyString();
-    objects.push_back({{"name", i.first.keyString()}, {"data", i.second->saveBinary(addIndexedBlob)}});
+    currentObjectName = i.first.toString();
+    objects.push_back({{"name", i.first.toString()}, {"data", i.second->saveBinary(addIndexedBlob)}});
   }
 
   for(const auto& i : d->complexObjectsJSON)
-    objects.push_back({{"name", i.first.keyString()}, {"data", i.second}});
+    objects.push_back({{"name", i.first.toString()}, {"data", i.second}});
 
   for(const auto& i : d->complexObjectsBlobs)
   {
-    currentObjectName = i.first.keyString();
+    currentObjectName = i.first.toString();
     for(const auto& blob : i.second)
       addIndexedBlob(blob);
   }
@@ -97,7 +97,7 @@ void ComplexObjectManager::loadBinary(const nlohmann::json& j, const std::vector
   {
     for(nlohmann::json obj : objects)
     {
-      tp_utils::StringID name = tp_utils::getJSONValue<std::string>(obj, "name", "");
+      tp_utils::StringID name = TPJSONString(obj, "name", "");
       if(name.isValid())
         d->complexObjectsJSON[name] = obj["data"];
     }

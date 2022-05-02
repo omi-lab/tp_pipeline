@@ -25,6 +25,20 @@ std::string,
 std::vector<std::string>
 > Variant;
 
+}
+
+//##################################################################################################
+template<typename T>
+T tpGetVariantValue(const tp_pipeline::Variant& v, T defaultValue={})
+{
+  if(auto p = std::get_if<T>(&v))
+    return *p;
+  return defaultValue;
+}
+
+namespace tp_pipeline
+{
+
 //##################################################################################################
 struct Parameter
 {
@@ -176,24 +190,24 @@ inline Variant variantFromJSON(const nlohmann::json& j)
 {
   Variant v;
 
-  std::string type = tp_utils::getJSONValue<std::string>(j, "type", "blank");
+  std::string type = TPJSONString(j, "type", "blank");
 
   if(type == "bool")
   {
-    std::string value = tp_utils::getJSONValue<std::string>(j, "value", "false");
+    std::string value = TPJSONString(j, "value", "false");
     v = bool((value=="true")?true:false);
   }
   else if(type == "int")
   {
-    v = tp_utils::getJSONValue<int>(j, "value", 0);
+    v = TPJSONInt(j, "value", 0);
   }
   else if(type == "size_t")
   {
-    v = tp_utils::getJSONValue<size_t>(j, "value", 0);
+    v = TPJSONSizeT(j, "value", 0);
   }
   else if(type == "float")
   {
-    std::string hex = tp_utils::getJSONValue<std::string>(j, "bin", std::string());
+    std::string hex = TPJSONString(j, "bin", std::string());
     std::string str = tpFromHEX(hex);
 
     float value=0.0f;
@@ -203,7 +217,7 @@ inline Variant variantFromJSON(const nlohmann::json& j)
   }
   else if(type == "double")
   {
-    std::string hex = tp_utils::getJSONValue<std::string>(j, "bin", std::string());
+    std::string hex = TPJSONString(j, "bin", std::string());
     std::string str = tpFromHEX(hex);
 
     double value=0.0;
@@ -213,18 +227,18 @@ inline Variant variantFromJSON(const nlohmann::json& j)
   }
   else if(type == "string")
   {
-    v = tp_utils::getJSONValue<std::string>(j, "value", std::string());
+    v = TPJSONString(j, "value", std::string());
   }
   else if(type == "binary")
   {
-    v = base64_decode(tp_utils::getJSONValue<std::string>(j, "value", std::string()));
+    v = base64_decode(TPJSONString(j, "value", std::string()));
   }
   else if(type == "list")
   {
     try
     {
       std::vector<std::string> list;
-      for(const nlohmann::json& j : tp_utils::getJSONValue<nlohmann::json>(j, "value", nlohmann::json()))
+      for(const nlohmann::json& j : TPJSON(j, "value", nlohmann::json()))
         list.push_back(j);
       v = list;
     }

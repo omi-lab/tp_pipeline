@@ -28,8 +28,8 @@ nlohmann::json Parameter::save()const
 {
   nlohmann::json j;
 
-  j["Name"]        = name.keyString();
-  j["Type"]        = type.keyString();
+  j["Name"]        = name.toString();
+  j["Type"]        = type.toString();
   j["Value"]       = value           ;
   j["Min"]         = min             ;
   j["Max"]         = max             ;
@@ -43,15 +43,15 @@ nlohmann::json Parameter::save()const
 //##################################################################################################
 void Parameter::load(const nlohmann::json& j)
 {
-  name        = tp_utils::getJSONValue                (j, "Name",        std::string()   );
-  type        = tp_utils::getJSONValue                (j, "Type",        std::string()   );
-  mutate      = tp_utils::getJSONValue                (j, "Mutate",      false           );
-  description = tp_utils::getJSONValue                (j, "Description", std::string()   );
+  name        = TPJSONString(j, "Name");
+  type        = TPJSONString(j, "Type");
+  mutate      = TPJSONBool  (j, "Mutate");
+  description = TPJSONString(j, "Description");
 
-  value = variantFromJSON(tp_utils::getJSONValue<nlohmann::json>(j, "Value", nlohmann::json()));
-  min   = variantFromJSON(tp_utils::getJSONValue<nlohmann::json>(j, "Min",   nlohmann::json()));
-  max   = variantFromJSON(tp_utils::getJSONValue<nlohmann::json>(j, "Max",   nlohmann::json()));
-  step  = variantFromJSON(tp_utils::getJSONValue<nlohmann::json>(j, "Step",  nlohmann::json()));
+  value = variantFromJSON(TPJSON(j, "Value", nlohmann::json()));
+  min   = variantFromJSON(TPJSON(j, "Min",   nlohmann::json()));
+  max   = variantFromJSON(TPJSON(j, "Max",   nlohmann::json()));
+  step  = variantFromJSON(TPJSON(j, "Step",  nlohmann::json()));
 }
 
 //##################################################################################################
@@ -59,8 +59,8 @@ nlohmann::json Parameter::saveBinary(const std::function<uint64_t(const std::str
 {
   nlohmann::json j;
 
-  j["Name"]        = name.keyString();
-  j["Type"]        = type.keyString();
+  j["Name"]        = name.toString();
+  j["Type"]        = type.toString();
   j["Min"]         = min             ;
   j["Max"]         = max             ;
   j["Step"]        = step            ;
@@ -81,15 +81,15 @@ nlohmann::json Parameter::saveBinary(const std::function<uint64_t(const std::str
 //##################################################################################################
 void Parameter::loadBinary(const nlohmann::json& j, const std::vector<std::string>& blobs)
 {
-  name        = tp_utils::getJSONValue                (j, "Name",        std::string()   );
-  type        = tp_utils::getJSONValue                (j, "Type",        std::string()   );
-  mutate      = tp_utils::getJSONValue                (j, "Mutate",      false           );
-  description = tp_utils::getJSONValue                (j, "Description", std::string()   );
+  name        = TPJSONString(j, "Name"       );
+  type        = TPJSONString(j, "Type"       );
+  mutate      = TPJSONBool  (j, "Mutate"     );
+  description = TPJSONString(j, "Description");
 
-  value = variantFromJSON(tp_utils::getJSONValue<nlohmann::json>(j, "Value", nlohmann::json()));
-  min   = variantFromJSON(tp_utils::getJSONValue<nlohmann::json>(j, "Min",   nlohmann::json()));
-  max   = variantFromJSON(tp_utils::getJSONValue<nlohmann::json>(j, "Max",   nlohmann::json()));
-  step  = variantFromJSON(tp_utils::getJSONValue<nlohmann::json>(j, "Step",  nlohmann::json()));
+  value = variantFromJSON(TPJSON(j, "Value"));
+  min   = variantFromJSON(TPJSON(j, "Min"  ));
+  max   = variantFromJSON(TPJSON(j, "Max"  ));
+  step  = variantFromJSON(TPJSON(j, "Step" ));
 
   if(type == binaryDataSID())
   {

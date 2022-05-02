@@ -296,11 +296,14 @@ void PipelineDetails::loadBinary(std::string& error, const std::string& data)
     while(!d->steps.empty())
       deleteStep(d->steps.at(0));
 
-    for(const auto& stepData : tp_utils::getJSONValue(j, "Steps", nlohmann::json()))
+    if(auto i=j.find("Steps"); i!=j.end() && i->is_array())
     {
-      StepDetails* step = new StepDetails();
-      step->loadBinary(stepData, blobs);
-      addStep(step);
+      for(const auto& stepData : *i)
+      {
+        StepDetails* step = new StepDetails();
+        step->loadBinary(stepData, blobs);
+        addStep(step);
+      }
     }
   }
 }

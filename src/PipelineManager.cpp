@@ -116,7 +116,7 @@ struct PipelineManager::Private
           }
           else
           {
-            auto error = "Failed to find step delegate for: " + stepDetails.stepDetails->delegateName().keyString();
+            auto error = "Failed to find step delegate for: " + stepDetails.stepDetails->delegateName().toString();
             errors.push_back(error);
             tpWarning() << error;
           }
