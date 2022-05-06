@@ -76,20 +76,21 @@ public:
                              StepDetails* stepDetails);
 
   //################################################################################################
-  //! This sets the initial input that will get fed into the pipeline
-  /*!
-  This will clear all cached data and set the initial input for the pipeline.
-
-  \param initialInput - This is combined with the input passed into each call to execute.
-  */
-  void setStaticInput(const std::shared_ptr<tp_data::Collection>& initialInput);
-
-  //################################################################################################
   //! Returns the pipeline
   PipelineDetails* pipelineDetails();
 
   //################################################################################################
   std::vector<std::shared_ptr<tp_data::Collection>> cachedState() const;
+
+  //################################################################################################
+  //! Clear the persistent data.
+  /*!
+  Each step has persistent data that is kept over multiple passes of the pipeline. This is used to
+  hold data that may be needed from one frame to the next. Calling this function will reset that
+  data, this may be useful if you have reached the end of one video clip and are ready to start the
+  next.
+  */
+  void resetPersistentData();
 
 private:
   struct Private;

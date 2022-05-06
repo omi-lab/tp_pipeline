@@ -145,32 +145,6 @@ void PipelineDetails::deleteStep(StepDetails* step)
   delete step;
 }
 
-////##################################################################################################
-//nlohmann::json PipelineDetails::save()
-//{
-//  nlohmann::json j;
-
-//  j["Steps"] = nlohmann::json::array();
-//  for(StepDetails* step : d->steps)
-//    j["Steps"].push_back(step->save());
-
-//  return j;
-//}
-
-////##################################################################################################
-//void PipelineDetails::load(const nlohmann::json& j)
-//{
-//  while(!d->steps.empty())
-//    deleteStep(d->steps.at(0));
-
-//  for(const auto& stepData : tp_utils::getJSONValue(j, "Steps", nlohmann::json()))
-//  {
-//    StepDetails* step = new StepDetails();
-//    step->load(stepData);
-//    addStep(step);
-//  }
-//}
-
 //##################################################################################################
 void PipelineDetails::saveBinary(std::string& data)
 {

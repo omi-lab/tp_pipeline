@@ -91,30 +91,11 @@ public:
   //! Called just before a step is deleted.
   tp_utils::CallbackCollection<void(StepDetails*)> deletedCallback;
 
-//  //################################################################################################
-//  //! Saves the state of a pipeline
-//  /*!
-//  This will call save on each of the child steps.
-
-//  \return Saves the state of the pipeline.
-//  */
-//  nlohmann::json save();
-
-//  //################################################################################################
-//  //! Loads the state of the pipeline
-//  /*!
-//  This will delete all existing steps and load the state from the data.
-
-//  \param j - The saved state from a previous call to save().
-//  */
-//  void load(const nlohmann::json& j);
-
   //################################################################################################
   void saveBinary(std::string& data);
 
   //################################################################################################
   void loadBinary(std::string& error, const std::string& data);
-
 
 private:
   struct Private;

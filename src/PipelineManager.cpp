@@ -22,6 +22,7 @@ struct StepDetails_lt
   const AbstractStepDelegate* delegate{nullptr};
 
   std::shared_ptr<tp_data::Collection> results;
+  std::shared_ptr<tp_data::Collection> persistentData;
 
   //Set true when the cached data is valid
   bool cacheValid{false};
@@ -44,7 +45,6 @@ struct PipelineManager::Private
   const tp_data::CollectionFactory* collectionFactory;
 
   std::vector<StepDetails_lt> cachedState;
-  std::shared_ptr<tp_data::Collection> staticInput{new tp_data::Collection()};
 
   tp_utils::Callback<void(StepDetails*)> changedCallback;
   tp_utils::Callback<void(StepDetails*)> deletedCallback;
@@ -110,8 +110,16 @@ struct PipelineManager::Private
         {
           if(stepDetails.delegate)
           {
-            stepDetails.results.reset(new tp_data::Collection());
-            stepDetails.delegate->executeStep(stepDetails.stepDetails, input, *stepDetails.results);
+            stepDetails.results = std::make_shared<tp_data::Collection>();
+
+            if(!stepDetails.persistentData)
+              stepDetails.persistentData = std::make_shared<tp_data::Collection>();
+
+            stepDetails.delegate->executeStep(stepDetails.stepDetails,
+                                              input,
+                                              *stepDetails.results,
+                                              *stepDetails.persistentData);
+
             errors.insert(errors.end(), stepDetails.results->errors().begin(), stepDetails.results->errors().end());
           }
           else
@@ -144,7 +152,7 @@ struct PipelineManager::Private
 
     StepDetails_lt& root = cachedState[0];
     root.results.reset(new tp_data::Collection);
-    collectionFactory->cloneAppend(error, *staticInput, *root.results);
+    //collectionFactory->cloneAppend(error, *staticInput, *root.results);
     collectionFactory->cloneAppend(error, *input, *root.results);
     root.cacheValid = false;
   }
@@ -340,14 +348,6 @@ void PipelineManager::generateNextStepInput(std::vector<std::string>& errors,
 }
 
 //##################################################################################################
-void PipelineManager::setStaticInput(const std::shared_ptr<tp_data::Collection>& input)
-{
-  d->staticInput = input;
-  d->updateRoot(std::make_shared<tp_data::Collection>());
-  d->rebuildCache();
-}
-
-//##################################################################################################
 PipelineDetails* PipelineManager::pipelineDetails()
 {
   return d->pipelineDetails;
@@ -361,6 +361,13 @@ std::vector<std::shared_ptr<tp_data::Collection>> PipelineManager::cachedState()
     if(i.results)
       results.push_back(i.results);
   return results;
+}
+
+//##################################################################################################
+void PipelineManager::resetPersistentData()
+{
+  for(auto& i : d->cachedState)
+    i.persistentData.reset();
 }
 
 }
