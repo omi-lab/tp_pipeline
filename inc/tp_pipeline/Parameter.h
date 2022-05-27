@@ -329,7 +329,7 @@ inline void to_json(nlohmann::json& j, const tp_pipeline::Variant& v)
     if(binary)
     {
       j["type"]   = "binary";
-      j["value"]  = base64_encode(reinterpret_cast<unsigned char const*>(value.data()), uint(value.size()));
+      j["value"]  = base64_encode(reinterpret_cast<unsigned char const*>(value.data()), value.size());
     }
     else
     {
