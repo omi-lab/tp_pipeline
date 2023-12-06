@@ -47,6 +47,7 @@ struct Parameter
   /*!
   The data type of this parameter:
    - Int
+   - Size       - size_t
    - Float
    - Double
    - String
