@@ -4,6 +4,7 @@
 #include "tp_pipeline/StepDetails.h"
 
 #include "tp_pipeline/step_delegates/NoneStepDelegate.h"
+#include "tp_pipeline/step_delegates/CopyStepDelegate.h"
 
 #include "tp_data/CollectionFactory.h"
 
@@ -13,6 +14,7 @@
 namespace tp_pipeline
 {
 TP_DEFINE_ID(                         noneSID,                             "None");
+TP_DEFINE_ID(                         copySID,                             "Copy");
 TP_DEFINE_ID(                          intSID,                              "Int");
 TP_DEFINE_ID(                         sizeSID,                             "Size");
 TP_DEFINE_ID(                        floatSID,                            "Float");
@@ -26,12 +28,14 @@ TP_DEFINE_ID(            convolutionMatrixSID,               "Convolution matrix
 TP_DEFINE_ID(                fileDirectorySID,                   "File directory");
 TP_DEFINE_ID(                    fileIndexSID,                       "File index");
 TP_DEFINE_ID(                   collectionSID,                       "Collection");
+TP_DEFINE_ID(                  memberNamesSID,                     "Member names");
 
 //##################################################################################################
 void createStepDelegates(StepDelegateMap& stepDelegates, const tp_data::CollectionFactory* collectionFactory)
 {
   TP_UNUSED(collectionFactory);
   stepDelegates.addStepDelegate(new NoneStepDelegate);
+  stepDelegates.addStepDelegate(new CopyStepDelegate(collectionFactory));
 }
 
 //##################################################################################################

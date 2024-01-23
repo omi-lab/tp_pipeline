@@ -28,7 +28,7 @@ std::vector<tp_data::AbstractMember*> StepInput::members() const
 }
 
 //##################################################################################################
-tp_data::AbstractMember* StepInput::member(const std::string& name) const
+tp_data::AbstractMember* StepInput::member(const tp_utils::StringID& name) const
 {
   for(size_t i=previousSteps.size(); i>0; i--)
     if(auto m = previousSteps.at(i-1)->member(name); m)

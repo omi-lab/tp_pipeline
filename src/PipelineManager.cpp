@@ -71,7 +71,8 @@ struct PipelineManager::Private
       tp_utils::printStackTrace();
     }
 
-    updateRoot(std::make_shared<tp_data::Collection>());
+    std::string error;
+    updateRoot(error, std::make_shared<tp_data::Collection>());
     rebuildCache(fixupParameters);
   }
 
@@ -143,17 +144,19 @@ struct PipelineManager::Private
   //################################################################################################
   //This updates the imaginary item at the start of the pipeline that is used to feed data into the
   //pipeline.
-  void updateRoot(const std::shared_ptr<tp_data::Collection>& input)
+  void updateRoot(std::string& error, const std::shared_ptr<tp_data::Collection>& input)
   {
     if(cachedState.empty())
       cachedState.push_back(StepDetails_lt());
-
-    std::string error;
 
     StepDetails_lt& root = cachedState[0];
     root.results.reset(new tp_data::Collection);
     //collectionFactory->cloneAppend(error, *staticInput, *root.results);
     collectionFactory->cloneAppend(error, *input, *root.results);
+
+
+    tpDebug() << "@@@@@@@@@@@@@@@@@@@@@@@ " << error;
+
     root.cacheValid = false;
   }
 
@@ -280,7 +283,16 @@ PipelineManager::~PipelineManager()
 //##################################################################################################
 std::shared_ptr<tp_data::Collection> PipelineManager::execute(std::vector<std::string>& errors, const std::shared_ptr<tp_data::Collection>& input)
 {
-  d->updateRoot(input);
+  {
+    std::string error;
+    d->updateRoot(error, input);
+    if(!error.empty())
+    {
+      errors.push_back(error);
+      return {};
+    }
+  }
+
   size_t lastIndex = d->cachedState.size()-1;
 
   StepInput rollingInput;
@@ -342,7 +354,16 @@ void PipelineManager::generateNextStepInput(std::vector<std::string>& errors,
                                             const std::shared_ptr<tp_data::Collection>& input,
                                             StepDetails* stepDetails)
 {
-  d->updateRoot(input);
+  {
+    std::string error;
+    d->updateRoot(error, input);
+    if(!error.empty())
+    {
+      errors.push_back(error);
+      return;
+    }
+  }
+
   size_t lastIndex = d->indexOf(stepDetails);
   errors = d->execute(lastIndex, result);
 }

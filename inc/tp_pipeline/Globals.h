@@ -16,6 +16,7 @@ class StepDelegateMap;
 class StepDetails;
 
 TP_DECLARE_ID(                         noneSID,                             "None");
+TP_DECLARE_ID(                         copySID,                             "Copy");
 TP_DECLARE_ID(                          intSID,                              "Int");
 TP_DECLARE_ID(                         sizeSID,                             "Size");
 TP_DECLARE_ID(                        floatSID,                            "Float");
@@ -29,6 +30,7 @@ TP_DECLARE_ID(            convolutionMatrixSID,               "Convolution matri
 TP_DECLARE_ID(                fileDirectorySID,                   "File directory");
 TP_DECLARE_ID(                    fileIndexSID,                       "File index");
 TP_DECLARE_ID(                   collectionSID,                       "Collection");
+TP_DECLARE_ID(                  memberNamesSID,                     "Member names");
 
 //##################################################################################################
 //! Add the step delegates that this module provides to the StepDelegateMap

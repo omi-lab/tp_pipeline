@@ -30,11 +30,11 @@ struct StepInput
   \param name The unique name of the member to find.
   \returns A pointer to the member or nullptr.
   */
-  tp_data::AbstractMember* member(const std::string& name) const;
+  tp_data::AbstractMember* member(const tp_utils::StringID& name) const;
 
   //################################################################################################
   template<typename T>
-  void memberCast(const std::string& name, T*& obs) const
+  void memberCast(const tp_utils::StringID& name, T*& obs) const
   {
     obs = dynamic_cast<T*>(member(name));
   }
