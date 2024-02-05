@@ -151,11 +151,7 @@ struct PipelineManager::Private
 
     StepDetails_lt& root = cachedState[0];
     root.results.reset(new tp_data::Collection);
-    //collectionFactory->cloneAppend(error, *staticInput, *root.results);
     collectionFactory->cloneAppend(error, *input, *root.results);
-
-
-    tpDebug() << "@@@@@@@@@@@@@@@@@@@@@@@ " << error;
 
     root.cacheValid = false;
   }
