@@ -114,9 +114,15 @@ nlohmann::json Parameter::saveHash(const std::unordered_map<tp_utils::StringID, 
 std::unordered_map<tp_utils::StringID, tp_pipeline::Parameter> Parameter::loadHash(const nlohmann::json& j)
 {
   std::unordered_map<tp_utils::StringID, tp_pipeline::Parameter> paramHash;
-  for(Parameter param : j)
-    if(param.name.isValid())
-      paramHash[param.name] = param;
+  if(j.is_array())
+  {
+    for(const auto& jj : j)
+    {
+      Parameter param(jj);
+      if(param.name.isValid())
+        paramHash[param.name] = param;
+    }
+  }
 
   return paramHash;
 }

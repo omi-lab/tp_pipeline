@@ -110,7 +110,7 @@ void StepDetails::loadBinary(const nlohmann::json& j, const std::vector<std::str
   }
 
   d->parametersOrder.clear();
-  for(tp_utils::StringID name : tp_utils::getJSONStringList(j, "Parameters order"))
+  for(const tp_utils::StringID& name : tp_utils::getJSONStringIDs(j, "Parameters order"))
     if(name.isValid())
       d->parametersOrder.push_back(name);
 
