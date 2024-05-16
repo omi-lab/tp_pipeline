@@ -27,7 +27,9 @@ will be used to execute the step.
  */
 class StepDetails
 {
+  friend class PipelineDetails;
   TP_REF_COUNT_OBJECTS("StepDetails");
+  TP_DQ;
   StepDetails& operator=(const StepDetails&) = delete;
 public:
   //################################################################################################
@@ -137,12 +139,6 @@ private:
   //################################################################################################
   //Called by the pipeline
   void setParent(PipelineDetails* parent);
-
-  struct Private;
-  friend struct Private;
-  Private* d;
-
-  friend class PipelineDetails;
 };
 
 }

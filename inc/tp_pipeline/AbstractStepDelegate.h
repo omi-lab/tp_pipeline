@@ -18,6 +18,7 @@ class StepDetails;
 //##################################################################################################
 class AbstractStepDelegate
 {
+  TP_DQ;
 public:
   //################################################################################################
   AbstractStepDelegate(const tp_utils::StringID& name, const std::vector<tp_utils::StringID>& groups);
@@ -63,13 +64,6 @@ public:
   \param stepDetails
   */
   virtual void fixupParameters(StepDetails* stepDetails) const=0;
-
-
-
-private:
-  struct Private;
-  friend struct Private;
-  Private* d;
 };
 
 }

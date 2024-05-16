@@ -12,6 +12,7 @@ namespace tp_pipeline
 //##################################################################################################
 class PipelineDetails
 {
+  TP_DQ;
 public:
   //################################################################################################
   PipelineDetails();
@@ -96,11 +97,6 @@ public:
 
   //################################################################################################
   void loadBinary(std::string& error, const std::string& data);
-
-private:
-  struct Private;
-  friend struct Private;
-  Private* d;
 };
 
 }

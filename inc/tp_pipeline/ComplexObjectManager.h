@@ -19,6 +19,7 @@ class AbstractComplexObject;
 //##################################################################################################
 class ComplexObjectManager
 {
+  TP_DQ;
 public:
   //################################################################################################
   ComplexObjectManager();
@@ -61,11 +62,6 @@ public:
   \return The complex object. Dynamic cast the result and check for nullptr.
   */
   AbstractComplexObject* complexObject(const tp_utils::StringID& name, AbstractComplexObjectFactory* factory);
-
-private:
-  struct Private;
-  friend struct Private;
-  Private* d;
 };
 
 
