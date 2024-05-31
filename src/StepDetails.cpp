@@ -39,8 +39,8 @@ StepDetails::StepDetails(const tp_utils::StringID& delegateName):
 
 //##################################################################################################
 StepDetails::StepDetails(const StepDetails& other):
-  complexObjectManager(other.complexObjectManager),
-  d(new Private(this, other.d->delegateName))
+  d(new Private(this, other.d->delegateName)),
+  complexObjectManager(other.complexObjectManager)
 {
   d->parameters         = other.d->parameters;
   d->parametersOrder    = other.d->parametersOrder;

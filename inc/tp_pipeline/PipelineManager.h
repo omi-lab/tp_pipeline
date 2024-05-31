@@ -21,6 +21,7 @@ namespace tp_pipeline
 //! This uses delegates to manage and execute a pipeline.
 class PipelineManager
 {
+  TP_DQ;
 public:
 
   //################################################################################################
@@ -91,11 +92,6 @@ public:
   next.
   */
   void resetPersistentData();
-
-private:
-  struct Private;
-  Private* d;
-  friend struct Private;
 };
 
 }
