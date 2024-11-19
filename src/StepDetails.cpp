@@ -102,11 +102,14 @@ void StepDetails::loadBinary(const nlohmann::json& j, const std::vector<std::str
   d->delegateName = TPJSONString(j, "Delegate", "None");
 
   d->parameters.clear();
-  for(const auto& jj : TPJSON(j, "Parameters"))
+  if(auto i = j.find("Parameters"); i != j.end() and i->is_array())
   {
-    Parameter parameter(jj, blobs);
-    if(parameter.name.isValid())
-      d->parameters[parameter.name] = parameter;
+    for(const auto& jj : *i)
+    {
+      Parameter parameter(jj, blobs);
+      if(parameter.name.isValid())
+        d->parameters[parameter.name] = parameter;
+    }
   }
 
   d->parametersOrder.clear();
@@ -114,15 +117,21 @@ void StepDetails::loadBinary(const nlohmann::json& j, const std::vector<std::str
     if(name.isValid())
       d->parametersOrder.push_back(name);
 
-  complexObjectManager.loadBinary(TPJSON(j, "Complex objects"), blobs);
+  if(auto i=j.find("Complex objects"); i!=j.end())
+    complexObjectManager.loadBinary(*i, blobs);
+  else
+    complexObjectManager.clearComplexObjects();
 
   d->outputMapping.clear();
-  for(const auto& i: TPJSON(j, "Output mapping"))
+  if(auto i = j.find("Output mapping"); i != j.end() and i->is_array())
   {
-    std::string src = i.value("src", std::string());
-    std::string dst = i.value("dst", std::string());
-    if(!src.empty() && !dst.empty())
-      d->outputMapping.push_back({src, dst});
+    for(const auto& m: *i)
+    {
+      std::string src = m.value("src", std::string());
+      std::string dst = m.value("dst", std::string());
+      if(!src.empty() && !dst.empty())
+        d->outputMapping.push_back({src, dst});
+    }
   }
 
   invalidate();

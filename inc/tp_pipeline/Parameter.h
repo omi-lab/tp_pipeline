@@ -236,17 +236,16 @@ inline Variant variantFromJSON(const nlohmann::json& j)
   }
   else if(type == "list")
   {
-    try
+    if(auto i = j.find("value"); i != j.end() and i->is_array())
     {
       std::vector<std::string> list;
-      for(const nlohmann::json& j : TPJSON(j, "value", nlohmann::json()))
-        list.push_back(j);
+      for(const nlohmann::json& j : *i)
+        if(j.is_string())
+          list.push_back(j);
       v = list;
     }
-    catch(...)
-    {
+    else
       v = std::monostate();
-    }
   }
   else
   {
@@ -254,6 +253,15 @@ inline Variant variantFromJSON(const nlohmann::json& j)
   }
 
   return v;
+}
+
+//##################################################################################################
+inline Variant variantFromJSON(const nlohmann::json& j, const std::string& key)
+{
+  if(auto i = j.find(key); i != j.end())
+    return variantFromJSON(i.value());
+
+  return Variant();
 }
 
 }

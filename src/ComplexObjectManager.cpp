@@ -87,13 +87,12 @@ void ComplexObjectManager::loadBinary(const nlohmann::json& j, const std::vector
 {
   clearComplexObjects();
 
-  if(auto blobIndex = TPJSON(j, "blobIndex"); blobIndex.is_array())
+  if(const auto& blobIndex = TPJSON(j, "blobIndex"); blobIndex.is_array())
     for(const auto& jj : blobIndex)
       if(auto index = TPJSONSizeT(jj, "index"); index<blobs.size())
         d->complexObjectsBlobs[TPJSONString(jj, "name")].push_back(blobs.at(index));
 
-  auto objects = TPJSON(j, "objects");
-  if(objects.is_array())
+  if(const auto& objects = TPJSON(j, "objects"); objects.is_array())
   {
     for(nlohmann::json obj : objects)
     {

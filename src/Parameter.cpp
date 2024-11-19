@@ -48,10 +48,10 @@ void Parameter::load(const nlohmann::json& j)
   mutate      = TPJSONBool  (j, "Mutate");
   description = TPJSONString(j, "Description");
 
-  value = variantFromJSON(TPJSON(j, "Value", nlohmann::json()));
-  min   = variantFromJSON(TPJSON(j, "Min",   nlohmann::json()));
-  max   = variantFromJSON(TPJSON(j, "Max",   nlohmann::json()));
-  step  = variantFromJSON(TPJSON(j, "Step",  nlohmann::json()));
+  value = variantFromJSON(j, "Value");
+  min   = variantFromJSON(j, "Min"  );
+  max   = variantFromJSON(j, "Max"  );
+  step  = variantFromJSON(j, "Step" );
 }
 
 //##################################################################################################
@@ -86,10 +86,10 @@ void Parameter::loadBinary(const nlohmann::json& j, const std::vector<std::strin
   mutate      = TPJSONBool  (j, "Mutate"     );
   description = TPJSONString(j, "Description");
 
-  value = variantFromJSON(TPJSON(j, "Value"));
-  min   = variantFromJSON(TPJSON(j, "Min"  ));
-  max   = variantFromJSON(TPJSON(j, "Max"  ));
-  step  = variantFromJSON(TPJSON(j, "Step" ));
+  value = variantFromJSON(j, "Value");
+  min   = variantFromJSON(j, "Min"  );
+  max   = variantFromJSON(j, "Max"  );
+  step  = variantFromJSON(j, "Step" );
 
   if(type == binaryDataSID())
   {
