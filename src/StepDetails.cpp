@@ -102,7 +102,7 @@ void StepDetails::loadBinary(const nlohmann::json& j, const std::vector<std::str
   d->delegateName = TPJSONString(j, "Delegate", "None");
 
   d->parameters.clear();
-  if(auto i = j.find("Parameters"); i != j.end() and i->is_array())
+  if(auto i = j.find("Parameters"); i != j.end() && i->is_array())
   {
     for(const auto& jj : *i)
     {
@@ -123,7 +123,7 @@ void StepDetails::loadBinary(const nlohmann::json& j, const std::vector<std::str
     complexObjectManager.clearComplexObjects();
 
   d->outputMapping.clear();
-  if(auto i = j.find("Output mapping"); i != j.end() and i->is_array())
+  if(auto i = j.find("Output mapping"); i != j.end() && i->is_array())
   {
     for(const auto& m: *i)
     {

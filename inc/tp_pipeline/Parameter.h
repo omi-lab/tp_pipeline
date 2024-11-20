@@ -236,7 +236,7 @@ inline Variant variantFromJSON(const nlohmann::json& j)
   }
   else if(type == "list")
   {
-    if(auto i = j.find("value"); i != j.end() and i->is_array())
+    if(auto i = j.find("value"); i != j.end() && i->is_array())
     {
       std::vector<std::string> list;
       for(const nlohmann::json& j : *i)
