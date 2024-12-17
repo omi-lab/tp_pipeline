@@ -9,7 +9,7 @@ namespace tp_pipeline
 //##################################################################################################
 struct StepDetails::Private
 {
-  StepDetails* q;
+  Q* q;
   PipelineDetails* parent;
   tp_utils::StringID delegateName;
 
@@ -21,7 +21,7 @@ struct StepDetails::Private
 
 
   //################################################################################################
-  Private(StepDetails* q_, const tp_utils::StringID& delegateName_):
+  Private(Q* q_, const tp_utils::StringID& delegateName_):
     q(q_),
     parent(nullptr),
     delegateName(delegateName_)

@@ -11,12 +11,12 @@ namespace tp_pipeline
 struct PipelineDetails::Private
 {
   TP_REF_COUNT_OBJECTS("PipelineDetails");
-  PipelineDetails* q;
+  Q* q;
 
   std::vector<StepDetails*> steps;
 
   //################################################################################################
-  Private(PipelineDetails* q_):
+  Private(Q* q_):
     q(q_)
   {
 

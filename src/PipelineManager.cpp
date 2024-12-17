@@ -38,7 +38,7 @@ struct StepDetails_lt
 //##################################################################################################
 struct PipelineManager::Private
 {
-  PipelineManager* q;
+  Q* q;
   PipelineDetails* pipelineDetails;
   PipelineDetails dummyPipeline;
   const tp_pipeline::StepDelegateMap* stepDelegates;
@@ -52,7 +52,7 @@ struct PipelineManager::Private
   bool ignoreCallbacks{false};
 
   //################################################################################################
-  Private(PipelineManager* q_,
+  Private(Q* q_,
           PipelineDetails* pipelineDetails_,
           const tp_pipeline::StepDelegateMap* stepDelegates_,
           const tp_data::CollectionFactory* collectionFactory_,
