@@ -1,112 +1,39 @@
-#ifndef tp_pipeline_StepInput_h
-#define tp_pipeline_StepInput_h
+#pragma once
 
 #include "tp_pipeline/Globals.h"
+#include "tp_pipeline/StepOutput.h"
 
-#include <memory>
+#include "tp_data/Collection.h"
+
+#include <unordered_set>
 
 namespace tp_data
 {
 class Collection;
-class AbstractMember;
+class CollectionFactory;
 }
 
 namespace tp_pipeline
 {
+class PipelineManager;
+class StepDelegate;
 
 //##################################################################################################
-struct StepInput
+struct StepContext
 {
-  std::vector<std::shared_ptr<tp_data::Collection>> previousSteps;
+  const StepDelegate* stepDelegate{nullptr};
+  StepDetails* stepDetails{nullptr};
+
+  std::unordered_set<StepContext*> dependsOn;
+
+  std::shared_ptr<tp_data::Collection> stepInput;
+  std::shared_ptr<StepOutput> stepOutput;
+
+  bool runStarted{false};
+  bool runComplete{false};
 
   //################################################################################################
-  std::vector<tp_data::AbstractMember*> members() const;
-
-  //################################################################################################
-  //! Find an member.
-  /*!
-  Search the results of the previous steps for a member.
-  \note The Collection owns the returned member.
-  \param name The unique name of the member to find.
-  \returns A pointer to the member or nullptr.
-  */
-  tp_data::AbstractMember* member(const tp_utils::StringID& name) const;
-
-  //################################################################################################
-  template<typename T>
-  void memberCast(const tp_utils::StringID& name, T*& obs) const
-  {
-    obs = dynamic_cast<T*>(member(name));
-  }
+  bool dependenciesMet() const;
 };
 
 }
-
-#endif
-
-
-
-
-
-
-
-//#include "tp_pipeline/StepDetails.h"
-
-//#include "tp_image_utils/Point.h"
-//#include "tp_image_utils/Grid.h"
-//#include "tp_image_utils/ByteMap.h"
-
-
-
-
-//  StepInput() = default;
-//  StepInput(const StepInput& other) = delete;
-//  StepInput& operator=(const StepInput& other) = delete;
-
-//  ~StepInput();
-
-//  std::shared_ptr<tp_data::Collection> noPreviousStep_;
-//  std::vector<std::shared_ptr<tp_data::Collection>*> previousSteps;
-
-//  std::unordered_map<std::string, const tp_image_utils::ColorMap*>             namedColorImages;
-//  std::unordered_map<std::string, const tp_image_utils::ByteMap*>              namedByteMaps;
-//  std::unordered_map<std::string, const tp_image_utils::LineCollection*>       namedLines;
-//  std::unordered_map<std::string, const tp_image_utils::Grid*>                 namedGrids;
-//  std::unordered_map<std::string, const std::string*>                          namedStrings;
-//  std::unordered_map<std::string, const std::vector<std::string>*>             namedStringLists;
-//  std::unordered_map<std::string, const std::vector<float>*>                   namedFloatVectors;
-//  std::unordered_map<std::string, const std::vector<tp_math_utils::Polygon>*>  namedPolygons;
-
-//  //################################################################################################
-//  void deepCopy(const StepInput& other);
-
-//  //################################################################################################
-//  const std::shared_ptr<tp_data::Collection>& previousStep()const;
-
-//  //################################################################################################
-//  const tp_image_utils::ColorMap* findColorImage(const std::string& name)const;
-
-//  //################################################################################################
-//  const tp_image_utils::ByteMap* findByteMap(const std::string& name)const;
-
-//  //################################################################################################
-//  const tp_image_utils::LineCollection* findLines(const std::string& name)const;
-
-//  //################################################################################################
-//  const tp_image_utils::Grid* findGrid(const std::string& name)const;
-
-//  //################################################################################################
-//  const std::string* findString(const std::string& name)const;
-
-//  //################################################################################################
-//  const std::vector<std::string>* findStringList(const std::string& name)const;
-
-//  //################################################################################################
-//  const std::vector<float>* findFloatVector(const std::string& name)const;
-
-//  //################################################################################################
-//  const std::vector<tp_math_utils::Polygon>* findPolygons(const std::string& name)const;
-
-
-
-

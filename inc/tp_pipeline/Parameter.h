@@ -1,5 +1,4 @@
-#ifndef tp_pipeline_Parameter_h
-#define tp_pipeline_Parameter_h
+#pragma once
 
 #include "tp_pipeline/Globals.h"
 
@@ -90,7 +89,7 @@ struct Parameter
   void load(const nlohmann::json& j);
 
   //################################################################################################
-  nlohmann::json saveBinary(const std::function<uint64_t(const std::string&)>& addBlob) const;
+  void saveBinary(nlohmann::json& j, const std::function<uint64_t(const std::string&)>& addBlob) const;
 
   //################################################################################################
   void loadBinary(const nlohmann::json& j, const std::vector<std::string>& blobs);
@@ -359,5 +358,3 @@ inline void to_json(nlohmann::json& j, const tp_pipeline::Variant& v)
 }
 
 }
-
-#endif

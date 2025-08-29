@@ -55,10 +55,8 @@ void Parameter::load(const nlohmann::json& j)
 }
 
 //##################################################################################################
-nlohmann::json Parameter::saveBinary(const std::function<uint64_t(const std::string&)>& addBlob) const
+void Parameter::saveBinary(nlohmann::json& j, const std::function<uint64_t(const std::string&)>& addBlob) const
 {
-  nlohmann::json j;
-
   j["Name"]        = name.toString();
   j["Type"]        = type.toString();
   j["Min"]         = min             ;
@@ -74,8 +72,6 @@ nlohmann::json Parameter::saveBinary(const std::function<uint64_t(const std::str
   }
   else
     j["Value"] = value;
-
-  return j;
 }
 
 //##################################################################################################

@@ -2,33 +2,35 @@
 
 #include "tp_pipeline/Globals.h"
 
-#include <unordered_map>
+#include <memory>
+
+namespace tp_data
+{
+class Collection;
+class AbstractMember;
+}
 
 namespace tp_pipeline
 {
 class StepDelegate;
 
 //##################################################################################################
-class StepDelegateMap
+class TP_PIPELINE_SHARED_EXPORT StepOutput
 {
+  TP_NONCOPYABLE(StepOutput);
+  TP_DQ;
 public:
   //################################################################################################
-  StepDelegateMap();
+  StepOutput(const StepDelegate* stepDelegate, StepDetails* stepDetails);
 
   //################################################################################################
-  ~StepDelegateMap();
+  ~StepOutput();
 
   //################################################################################################
-  void addStepDelegate(tp_pipeline::StepDelegate* stepDelegate);
+  bool addMember(const tp_utils::StringID& portName, const std::shared_ptr<tp_data::AbstractMember>& member);
 
   //################################################################################################
-  const tp_pipeline::StepDelegate* stepDelegate(const tp_utils::StringID& name) const;
-
-  //################################################################################################
-  std::vector<tp_utils::StringID> stepDelegateNames() const;
-
-private:
-  std::unordered_map<tp_utils::StringID, tp_pipeline::StepDelegate*> m_stepDelegates;
+  void addError(const std::string& error);
 };
 
 }

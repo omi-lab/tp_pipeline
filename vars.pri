@@ -6,11 +6,11 @@ DEFINES += TP_PIPELINE_LIBRARY
 SOURCES += src/Globals.cpp
 HEADERS += inc/tp_pipeline/Globals.h
 
-SOURCES += src/AbstractComplexObject.cpp
-HEADERS += inc/tp_pipeline/AbstractComplexObject.h
+SOURCES += src/ComplexObject.cpp
+HEADERS += inc/tp_pipeline/ComplexObject.h
 
-SOURCES += src/AbstractComplexObjectFactory.cpp
-HEADERS += inc/tp_pipeline/AbstractComplexObjectFactory.h
+SOURCES += src/ComplexObjectFactory.cpp
+HEADERS += inc/tp_pipeline/ComplexObjectFactory.h
 
 SOURCES += src/ComplexObjectManager.cpp
 HEADERS += inc/tp_pipeline/ComplexObjectManager.h
@@ -21,6 +21,9 @@ HEADERS += inc/tp_pipeline/StepDetails.h
 SOURCES += src/StepInput.cpp
 HEADERS += inc/tp_pipeline/StepInput.h
 
+SOURCES += src/StepOutput.cpp
+HEADERS += inc/tp_pipeline/StepOutput.h
+
 SOURCES += src/PipelineDetails.cpp
 HEADERS += inc/tp_pipeline/PipelineDetails.h
 
@@ -30,8 +33,8 @@ HEADERS += inc/tp_pipeline/Parameter.h
 SOURCES += src/PipelineManager.cpp
 HEADERS += inc/tp_pipeline/PipelineManager.h
 
-SOURCES += src/AbstractStepDelegate.cpp
-HEADERS += inc/tp_pipeline/AbstractStepDelegate.h
+SOURCES += src/StepDelegate.cpp
+HEADERS += inc/tp_pipeline/StepDelegate.h
 
 SOURCES += src/StepDelegateMap.cpp
 HEADERS += inc/tp_pipeline/StepDelegateMap.h

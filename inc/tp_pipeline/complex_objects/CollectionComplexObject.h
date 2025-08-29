@@ -1,8 +1,7 @@
-#ifndef tp_pipeline_CollectionComplexObject_h
-#define tp_pipeline_CollectionComplexObject_h
+#pragma once
 
-#include "tp_pipeline/AbstractComplexObject.h"
-#include "tp_pipeline/AbstractComplexObjectFactory.h"
+#include "tp_pipeline/ComplexObject.h"
+#include "tp_pipeline/ComplexObjectFactory.h"
 
 #include "tp_data/Collection.h"
 
@@ -12,7 +11,7 @@ namespace tp_pipeline
 {
 
 //##################################################################################################
-class CollectionComplexObject: public AbstractComplexObject
+class CollectionComplexObject: public ComplexObject
 {
 public:
   //################################################################################################
@@ -22,10 +21,10 @@ public:
   ~CollectionComplexObject() override;
 
   //################################################################################################
-  nlohmann::json saveBinary(const std::function<uint64_t(const std::string&)>& addBlob) const override;
+  void saveBinary(nlohmann::json& j,const std::function<uint64_t(const std::string&)>& addBlob) const override;
 
   //################################################################################################
-  AbstractComplexObject* clone() const override;
+  ComplexObject* clone() const override;
 
   std::shared_ptr<tp_data::Collection> data;
 
@@ -34,23 +33,20 @@ private:
 };
 
 //##################################################################################################
-class CollectionComplexObjectFactory: public AbstractComplexObjectFactory
+class CollectionComplexObjectFactory: public ComplexObjectFactory
 {
 public:
   //################################################################################################
   CollectionComplexObjectFactory(const tp_data::CollectionFactory* collectionFactory);
 
   //################################################################################################
-  AbstractComplexObject* create() const override;
+  ComplexObject* create() const override;
 
   //################################################################################################
-  AbstractComplexObject* loadBinary(const nlohmann::json& j, const std::vector<std::string>& blobs) const override;
+  ComplexObject* loadBinary(const nlohmann::json& j, const std::vector<std::string>& blobs) const override;
 
 private:
   const tp_data::CollectionFactory* m_collectionFactory;
 };
 
 }
-
-#endif
-

@@ -1,7 +1,6 @@
 #include "tp_pipeline/complex_objects/CollectionComplexObject.h"
 
 #include "tp_data/CollectionFactory.h"
-#include "tp_data/AbstractMember.h"
 
 #include "tp_utils/JSONUtils.h"
 #include "tp_utils/DebugUtils.h"
@@ -11,7 +10,7 @@ namespace tp_pipeline
 
 //##################################################################################################
 CollectionComplexObject::CollectionComplexObject(const tp_data::CollectionFactory* collectionFactory):
-  AbstractComplexObject(collectionSID()),
+  ComplexObject(collectionSID()),
   m_collectionFactory(collectionFactory)
 {
 
@@ -21,10 +20,8 @@ CollectionComplexObject::CollectionComplexObject(const tp_data::CollectionFactor
 CollectionComplexObject::~CollectionComplexObject() = default;
 
 //##################################################################################################
-nlohmann::json CollectionComplexObject::saveBinary(const std::function<uint64_t(const std::string&)>& addBlob) const
+void CollectionComplexObject::saveBinary(nlohmann::json& j, const std::function<uint64_t(const std::string&)>& addBlob) const
 {
-  nlohmann::json j;
-
   std::string error;
   std::string binaryData;
   if(data)
@@ -35,12 +32,10 @@ nlohmann::json CollectionComplexObject::saveBinary(const std::function<uint64_t(
   }
 
   j["index"] = addBlob(binaryData);
-
-  return j;
 }
 
 //##################################################################################################
-AbstractComplexObject* CollectionComplexObject::clone() const
+ComplexObject* CollectionComplexObject::clone() const
 {
   auto obj = new CollectionComplexObject(m_collectionFactory);
   obj->data = data;
@@ -54,13 +49,13 @@ CollectionComplexObjectFactory::CollectionComplexObjectFactory(const tp_data::Co
 }
 
 //##################################################################################################
-AbstractComplexObject* CollectionComplexObjectFactory::create() const
+ComplexObject* CollectionComplexObjectFactory::create() const
 {
   return new CollectionComplexObject(m_collectionFactory);
 }
 
 //##################################################################################################
-AbstractComplexObject* CollectionComplexObjectFactory::loadBinary(const nlohmann::json& j, const std::vector<std::string>& blobs) const
+ComplexObject* CollectionComplexObjectFactory::loadBinary(const nlohmann::json& j, const std::vector<std::string>& blobs) const
 {
   auto obj = new CollectionComplexObject(m_collectionFactory);
   obj->data = std::make_shared<tp_data::Collection>();

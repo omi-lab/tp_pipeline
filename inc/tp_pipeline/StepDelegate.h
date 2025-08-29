@@ -1,9 +1,6 @@
-#ifndef tp_pipeline_AbstractStepDelegate_h
-#define tp_pipeline_AbstractStepDelegate_h
+#pragma once
 
 #include "tp_pipeline/Globals.h"
-
-#include <memory>
 
 namespace tp_data
 {
@@ -12,47 +9,53 @@ class Collection;
 
 namespace tp_pipeline
 {
-struct StepInput;
+struct StepContext;
 class StepDetails;
 
 //##################################################################################################
-class AbstractStepDelegate
+struct PortDetails
+{
+  tp_utils::StringID name;
+  tp_utils::StringID type;
+};
+
+//##################################################################################################
+class TP_PIPELINE_SHARED_EXPORT StepDelegate
 {
   TP_DQ;
 public:
   //################################################################################################
-  AbstractStepDelegate(const tp_utils::StringID& name, const std::vector<tp_utils::StringID>& groups);
+  StepDelegate(const tp_utils::StringID& name,
+               const std::vector<tp_utils::StringID>& groups,
+               const std::vector<PortDetails>& inPorts,
+               const std::vector<PortDetails>& outPorts);
 
   //################################################################################################
-  virtual ~AbstractStepDelegate();
+  virtual ~StepDelegate();
 
   //################################################################################################
-  const tp_utils::StringID& name()const;
+  const tp_utils::StringID& name() const;
 
   //################################################################################################
   const std::vector<tp_utils::StringID>& groups() const;
 
   //################################################################################################
+  const std::vector<PortDetails>& inPorts() const;
+
+  //################################################################################################
+  const std::vector<PortDetails>& outPorts() const;
+
+  //################################################################################################
   //! Execute this step in the pipeline.
   /*!
   This method should be reimplemented to perform the work of the step. The stepDetails contains the
-  configuration for the step, the input and output are for the data passing through the step, and
-  the persistentData is for steps that need to persist data between frames.
-
-  For pipelines operating on video data it is often necessary to access data from previous frames,
-  for example to calculate optical flow you need access to the currrent and previous frames. To
-  enable this the persistentData collection is provided, this will be passed into this step for each
-  pass of the pipeline. Each step has its own persistentData collection.
+  configuration for the step, the input and output are for the data passing through the step.
 
   \param stepDetails contins the configuration for the step.
   \param input data read from here.
   \param output data should be written to here.
-  \param persistentData belonging to this step.
   */
-  virtual void executeStep(StepDetails* stepDetails,
-                           const StepInput& input,
-                           tp_data::Collection& output,
-                           tp_data::Collection& persistentData) const=0;
+  virtual void executeStep(StepContext* stepContext) const=0;
 
   //################################################################################################
   //! This gets called to add, adapt, and validate step parametes
@@ -67,5 +70,3 @@ public:
 };
 
 }
-
-#endif

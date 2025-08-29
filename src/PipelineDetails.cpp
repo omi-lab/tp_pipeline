@@ -2,7 +2,6 @@
 
 #include "tp_utils/StackTrace.h"
 #include "tp_utils/DebugUtils.h"
-#include "tp_utils/JSONUtils.h"
 
 namespace tp_pipeline
 {
@@ -93,21 +92,12 @@ void PipelineDetails::addStep(StepDetails* step)
 //##################################################################################################
 void PipelineDetails::insertStep(StepDetails* step, size_t index)
 {
-  size_t invalidateFrom=d->steps.size();
-
   if(step->parent())
   {
     if(step->parent() == this)
     {
-      auto i = std::find(d->steps.begin(), d->steps.end(), step);
-      if(i!=d->steps.end())
-      {
-        auto f = size_t(i-d->steps.begin());
-        if(f<invalidateFrom)
-          invalidateFrom=f;
-
+      if(auto i = std::find(d->steps.begin(), d->steps.end(), step); i!=d->steps.end())
         d->steps.erase(i);
-      }
     }
     else
     {
@@ -118,13 +108,9 @@ void PipelineDetails::insertStep(StepDetails* step, size_t index)
   else
     step->setParent(this);
 
-  if(index<invalidateFrom)
-    invalidateFrom=index;
 
   d->steps.insert(d->steps.begin()+long(index), step);
-
-  for(size_t i=invalidateFrom; i<d->steps.size(); i++)
-    invalidateStep(d->steps.at(i));
+  invalidateStep(step);
 }
 
 //##################################################################################################
@@ -146,6 +132,49 @@ void PipelineDetails::deleteStep(StepDetails* step)
 }
 
 //##################################################################################################
+void PipelineDetails::clearDanglingInputs()
+{
+  std::unordered_set<tp_utils::StringID> validOutputs;
+  for(auto& step : d->steps)
+  {
+    bool changed=false;
+    auto mapping = step->outputMapping();
+
+    for(auto& outPort : mapping)
+    {
+      if(tpContains(validOutputs, outPort.dataName))
+      {
+        outPort.dataName = randomId();
+        changed = true;
+      }
+
+      validOutputs.insert(outPort.dataName);
+    }
+
+    if(changed)
+      step->setOutputMapping(mapping);
+  }
+
+  for(auto& step : d->steps)
+  {
+    bool changed=false;
+    auto mapping = step->inputMapping();
+
+    for(auto& outPort : mapping)
+    {
+      if(!tpContains(validOutputs, outPort.dataName))
+      {
+        outPort.dataName = {};
+        changed = true;
+      }
+    }
+
+    if(changed)
+      step->setInputMapping(mapping);
+  }
+}
+
+//##################################################################################################
 void PipelineDetails::saveBinary(std::string& data)
 {
   std::vector<std::string> blobs;
@@ -157,9 +186,16 @@ void PipelineDetails::saveBinary(std::string& data)
   };
 
   nlohmann::json j;
-  j["Steps"] = nlohmann::json::array();
-  for(StepDetails* step : d->steps)
-    j["Steps"].push_back(step->saveBinary(addBlob));
+  {
+    auto& jj=j["Steps"];
+    jj = nlohmann::json::array();
+    jj.get_ptr<nlohmann::json::array_t*>()->reserve(d->steps.size());
+    for(StepDetails* step : d->steps)
+    {
+      jj.emplace_back();
+      step->saveBinary(jj.back(), addBlob);
+    }
+  }
 
   addBlob(j.dump());
 

@@ -1,28 +1,22 @@
-#ifndef tp_pipeline_NoneStepDelegate_h
-#define tp_pipeline_NoneStepDelegate_h
+#pragma once
 
-#include "tp_pipeline/AbstractStepDelegate.h"
+#include "tp_pipeline/StepDelegate.h"
 
 namespace tp_pipeline
 {
 
 //##################################################################################################
-class NoneStepDelegate: public tp_pipeline::AbstractStepDelegate
+class NoneStepDelegate: public tp_pipeline::StepDelegate
 {
 public:
   //################################################################################################
   NoneStepDelegate();
 
   //################################################################################################
-  void executeStep(tp_pipeline::StepDetails* stepDetails,
-                   const tp_pipeline::StepInput& input,
-                   tp_data::Collection& output,
-                   tp_data::Collection& persistentData) const override;
+  void executeStep(StepContext* stepContext) const override;
 
   //################################################################################################
   void fixupParameters(tp_pipeline::StepDetails* stepDetails) const override;
 };
 
 }
-
-#endif

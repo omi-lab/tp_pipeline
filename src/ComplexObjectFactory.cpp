@@ -1,9 +1,9 @@
-#include "tp_pipeline/AbstractComplexObjectFactory.h"
+#include "tp_pipeline/ComplexObjectFactory.h"
 
 namespace tp_pipeline
 {
 
 //##################################################################################################
-AbstractComplexObjectFactory::~AbstractComplexObjectFactory() = default;
+ComplexObjectFactory::~ComplexObjectFactory() = default;
 
 }

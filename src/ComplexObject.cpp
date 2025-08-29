@@ -1,20 +1,20 @@
-#include "tp_pipeline/AbstractComplexObject.h"
+#include "tp_pipeline/ComplexObject.h"
 
 namespace tp_pipeline
 {
 
 //##################################################################################################
-AbstractComplexObject::AbstractComplexObject(tp_utils::StringID type):
+ComplexObject::ComplexObject(tp_utils::StringID type):
   m_type(std::move(type))
 {
 
 }
 
 //##################################################################################################
-AbstractComplexObject::~AbstractComplexObject() = default;
+ComplexObject::~ComplexObject() = default;
 
 //##################################################################################################
-tp_utils::StringID AbstractComplexObject::type()const
+tp_utils::StringID ComplexObject::type()const
 {
   return m_type;
 }

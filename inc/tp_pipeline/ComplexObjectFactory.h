@@ -1,5 +1,4 @@
-#ifndef tp_pipeline_AbstractComplexObjectFactory_h
-#define tp_pipeline_AbstractComplexObjectFactory_h
+#pragma once
 
 #include "tp_pipeline/Globals.h"
 
@@ -7,27 +6,25 @@
 
 namespace tp_pipeline
 {
-class AbstractComplexObject;
+class ComplexObject;
 
 //##################################################################################################
-class AbstractComplexObjectFactory
+class ComplexObjectFactory
 {
-  AbstractComplexObjectFactory( const AbstractComplexObjectFactory& ) = delete;
-  AbstractComplexObjectFactory& operator=(const AbstractComplexObjectFactory&) = delete;
+  ComplexObjectFactory( const ComplexObjectFactory& ) = delete;
+  ComplexObjectFactory& operator=(const ComplexObjectFactory&) = delete;
 public:
   //################################################################################################
-  AbstractComplexObjectFactory() = default;
+  ComplexObjectFactory() = default;
 
   //################################################################################################
-  virtual ~AbstractComplexObjectFactory();
+  virtual ~ComplexObjectFactory();
 
   //################################################################################################
-  virtual AbstractComplexObject* create() const=0;
+  virtual ComplexObject* create() const=0;
 
   //################################################################################################
-  virtual AbstractComplexObject* loadBinary(const nlohmann::json& j, const std::vector<std::string>& blobs) const=0;
+  virtual ComplexObject* loadBinary(const nlohmann::json& j, const std::vector<std::string>& blobs) const=0;
 };
 
 }
-
-#endif

@@ -1,7 +1,12 @@
-#ifndef tp_pipeline_Globals_h
-#define tp_pipeline_Globals_h
+#pragma once
 
 #include "tp_utils/StringID.h"
+
+#if defined(TP_PIPELINE_LIBRARY)
+#  define TP_PIPELINE_SHARED_EXPORT TP_EXPORT
+#else
+#  define TP_PIPELINE_SHARED_EXPORT TP_IMPORT
+#endif
 
 namespace tp_data
 {
@@ -64,9 +69,10 @@ This will look for the first that has a "File directory" parameter and set it.
 void setInputDirectory(const std::vector<StepDetails*>& steps, const std::string& directory);
 
 //##################################################################################################
+tp_utils::StringID randomId();
+
+//##################################################################################################
 //! Static initialization of this module, see TP_STATIC_INIT in dependencies.pri
 int staticInit();
 
 }
-
-#endif

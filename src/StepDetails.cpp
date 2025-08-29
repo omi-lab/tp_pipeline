@@ -16,8 +16,10 @@ struct StepDetails::Private
   std::unordered_map<tp_utils::StringID, Parameter> parameters;
   std::vector<tp_utils::StringID> parametersOrder;
 
-  std::vector<std::string> outputNames;
-  std::vector<std::pair<std::string, std::string>> outputMapping;
+  std::vector<PortMapping> inputMapping;
+  std::vector<PortMapping> outputMapping;
+
+  std::pair<double, double> position{0.0, 0.0};
 
 
   //################################################################################################
@@ -29,6 +31,22 @@ struct StepDetails::Private
 
   }
 };
+
+//##################################################################################################
+void PortMapping::saveState(nlohmann::json& j) const
+{
+  j["portType"] = portType.toString();
+  j["portName"] = portName.toString();
+  j["dataName"] = dataName.toString();
+}
+
+//##################################################################################################
+void PortMapping::loadState(const nlohmann::json& j)
+{
+  portType = TPJSONString(j, "portType");
+  portName = TPJSONString(j, "portName");
+  dataName = TPJSONString(j, "dataName");
+}
 
 //##################################################################################################
 StepDetails::StepDetails(const tp_utils::StringID& delegateName):
@@ -44,7 +62,7 @@ StepDetails::StepDetails(const StepDetails& other):
 {
   d->parameters         = other.d->parameters;
   d->parametersOrder    = other.d->parametersOrder;
-  d->outputNames        = other.d->outputNames;
+  d->inputMapping      = other.d->inputMapping;
   d->outputMapping      = other.d->outputMapping;
 }
 
@@ -65,44 +83,60 @@ const tp_utils::StringID& StepDetails::delegateName()const
 }
 
 //##################################################################################################
+const std::pair<double, double>& StepDetails::position() const
+{
+  return d->position;
+}
+
+//##################################################################################################
+void StepDetails::setPosition(const std::pair<double, double>& position)
+{
+  if(d->position == position)
+    return;
+
+  d->position = position;
+  invalidate();
+}
+
+//##################################################################################################
 PipelineDetails* StepDetails::parent()const
 {
   return d->parent;
 }
 
 //##################################################################################################
-nlohmann::json StepDetails::saveBinary(const std::function<uint64_t(const std::string&)>& addBlob) noexcept
+void StepDetails::saveBinary(nlohmann::json& j, const std::function<uint64_t(const std::string&)>& addBlob) noexcept
 {
-  nlohmann::json j;
+  j["delegateName"] = d->delegateName.toString();
 
-  j["Delegate"] = d->delegateName.toString();
-
-  j["Parameters"] = nlohmann::json::array();
-  for(const auto& i : d->parameters)
   {
-    j["Parameters"].push_back(i.second.saveBinary(addBlob));
+    auto& jj = j["parameters"];
+    jj = nlohmann::json::array();
+    jj.get_ptr<nlohmann::json::array_t*>()->reserve(d->parameters.size());
+    for(const auto& i : d->parameters)
+    {
+      jj.emplace_back();
+      i.second.saveBinary(jj.back(), addBlob);
+    }
   }
 
-  j["Parameters order"] = nlohmann::json::array();
-  for(const auto& i : d->parametersOrder)
-    j["Parameters order"].push_back(i.toString());
+  tp_utils::saveVectorOfStringIDsToJSON(j["parametersOrder"], d->parametersOrder);
 
-  j["Complex objects"] = complexObjectManager.saveBinary(addBlob);
+  complexObjectManager.saveBinary(j["complexObjectManager"], addBlob);
 
-  j["Output mapping"] = nlohmann::json::array();
-  for(const auto& i : d->outputMapping)
-    j["Output mapping"].push_back({{"src", i.first}, {"dst", i.second}});
+  tp_utils::saveVectorOfObjectsToJSON(j["inputMapping"], d->inputMapping);
+  tp_utils::saveVectorOfObjectsToJSON(j["outputMapping"], d->outputMapping);
 
-  return j;
+  j["position"] = nlohmann::json::array({d->position.first, d->position.second});
 }
 
 //##################################################################################################
 void StepDetails::loadBinary(const nlohmann::json& j, const std::vector<std::string>& blobs) noexcept
 {
-  d->delegateName = TPJSONString(j, "Delegate", "None");
+  d->delegateName = TPJSONString(j, "delegateName", "None");
 
   d->parameters.clear();
-  if(auto i = j.find("Parameters"); i != j.end() && i->is_array())
+  if(auto i = j.find("parameters"); i != j.end() && i->is_array())
   {
     for(const auto& jj : *i)
     {
@@ -112,27 +146,29 @@ void StepDetails::loadBinary(const nlohmann::json& j, const std::vector<std::str
     }
   }
 
-  d->parametersOrder.clear();
-  for(const tp_utils::StringID& name : tp_utils::getJSONStringIDs(j, "Parameters order"))
-    if(name.isValid())
-      d->parametersOrder.push_back(name);
+  tp_utils::loadVectorOfStringIDsFromJSON(j, "parametersOrder", d->parametersOrder);
 
-  if(auto i=j.find("Complex objects"); i!=j.end())
+  if(auto i=j.find("complexObjectManager"); i!=j.end())
     complexObjectManager.loadBinary(*i, blobs);
   else
     complexObjectManager.clearComplexObjects();
 
-  d->outputMapping.clear();
-  if(auto i = j.find("Output mapping"); i != j.end() && i->is_array())
-  {
-    for(const auto& m: *i)
-    {
-      std::string src = m.value("src", std::string());
-      std::string dst = m.value("dst", std::string());
-      if(!src.empty() && !dst.empty())
-        d->outputMapping.push_back({src, dst});
-    }
-  }
+  tp_utils::loadVectorOfObjectsFromJSON(j, "inputMapping", d->inputMapping);
+  tp_utils::loadVectorOfObjectsFromJSON(j, "outputMapping", d->outputMapping);
+
+  for(auto& m : d->outputMapping)
+    if(!m.dataName.isValid())
+      m.dataName = randomId();
+
+  if(auto i = j.find("position");
+     i != j.end() &&
+     i->is_array() &&
+     i->size() == 2 &&
+     i->at(0).is_number()&&
+     i->at(1).is_number())
+    d->position = {i->at(0).get<double>(), i->at(1).get<double>()};
+  else
+    d->position = {0.0, 0.0};
 
   invalidate();
 }
@@ -192,39 +228,29 @@ void StepDetails::setValidParameters(const std::vector<tp_utils::StringID>& vali
 }
 
 //##################################################################################################
-void StepDetails::setOutputMapping(const std::vector<std::pair<std::string, std::string> >& outputMapping)
+void StepDetails::setInputMapping(const std::vector<PortMapping>& inputMapping)
+{
+  d->inputMapping = inputMapping;
+  invalidate();
+}
+
+//##################################################################################################
+const std::vector<PortMapping>& StepDetails::inputMapping() const
+{
+  return d->inputMapping;
+}
+
+//##################################################################################################
+void StepDetails::setOutputMapping(const std::vector<PortMapping>& outputMapping)
 {
   d->outputMapping = outputMapping;
   invalidate();
 }
 
 //##################################################################################################
-const std::vector<std::pair<std::string, std::string>>& StepDetails::outputMapping() const
+const std::vector<PortMapping>& StepDetails::outputMapping() const
 {
   return d->outputMapping;
-}
-
-//##################################################################################################
-const std::vector<std::string>& StepDetails::outputNames() const
-{
-  return d->outputNames;
-}
-
-//##################################################################################################
-void StepDetails::setOutputNames(const std::vector<std::string>& outputNames)
-{
-  d->outputNames = outputNames;
-  invalidate();
-}
-
-//##################################################################################################
-std::string StepDetails::lookupOutputName(const std::string& outputName) const
-{
-  for(const auto& [from, to] : d->outputMapping)
-    if(from == outputName)
-      return to;
-
-  return outputName;
 }
 
 //##################################################################################################

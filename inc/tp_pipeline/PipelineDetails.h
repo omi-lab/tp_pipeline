@@ -1,5 +1,4 @@
-#ifndef tp_pipeline_PipelineDetails_h
-#define tp_pipeline_PipelineDetails_h
+#pragma once
 
 #include "tp_pipeline/Globals.h"
 #include "tp_pipeline/StepDetails.h"
@@ -78,11 +77,15 @@ public:
   //################################################################################################
   //! Delete a step that belongs to this pipeline
   /*!
-  This will delete the step and capp the remove callbacks.
+  This will delete the step and call the remove callbacks.
 
   \param step - The step to delete, must be a child of this pipeline.
   */
   void deleteStep(StepDetails* step);
+
+  //################################################################################################
+  //! Clear inputs names that are not connected to valid
+  void clearDanglingInputs();
 
   //################################################################################################
   //! Called when a step changes or is added.
@@ -100,5 +103,3 @@ public:
 };
 
 }
-
-#endif

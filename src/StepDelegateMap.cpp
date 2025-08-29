@@ -1,5 +1,5 @@
 #include "tp_pipeline/StepDelegateMap.h"
-#include "tp_pipeline/AbstractStepDelegate.h"
+#include "tp_pipeline/StepDelegate.h"
 
 namespace tp_pipeline
 {
@@ -15,7 +15,7 @@ StepDelegateMap::~StepDelegateMap()
 }
 
 //##################################################################################################
-void StepDelegateMap::addStepDelegate(tp_pipeline::AbstractStepDelegate* stepDelegate)
+void StepDelegateMap::addStepDelegate(tp_pipeline::StepDelegate* stepDelegate)
 {
   auto i = m_stepDelegates.find(stepDelegate->name());
   if(i != m_stepDelegates.end())
@@ -27,7 +27,7 @@ void StepDelegateMap::addStepDelegate(tp_pipeline::AbstractStepDelegate* stepDel
 }
 
 //##################################################################################################
-const tp_pipeline::AbstractStepDelegate* StepDelegateMap::stepDelegate(const tp_utils::StringID& name) const
+const tp_pipeline::StepDelegate* StepDelegateMap::stepDelegate(const tp_utils::StringID& name) const
 {
   return tpGetMapValue(m_stepDelegates, name, nullptr);
 }

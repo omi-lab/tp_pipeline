@@ -1,9 +1,8 @@
 #include "tp_pipeline/ComplexObjectManager.h"
-#include "tp_pipeline/AbstractComplexObject.h"
-#include "tp_pipeline/AbstractComplexObjectFactory.h"
+#include "tp_pipeline/ComplexObject.h"
+#include "tp_pipeline/ComplexObjectFactory.h"
 
 #include "tp_utils/JSONUtils.h"
-#include "tp_utils/DebugUtils.h"
 
 namespace tp_pipeline
 {
@@ -11,7 +10,7 @@ namespace tp_pipeline
 //##################################################################################################
 struct ComplexObjectManager::Private
 {
-  std::unordered_map<tp_utils::StringID, AbstractComplexObject*> complexObjects;
+  std::unordered_map<tp_utils::StringID, ComplexObject*> complexObjects;
   std::unordered_map<tp_utils::StringID, nlohmann::json> complexObjectsJSON;
   std::unordered_map<tp_utils::StringID, std::vector<std::string>> complexObjectsBlobs;
 };
@@ -42,9 +41,8 @@ ComplexObjectManager::~ComplexObjectManager()
 }
 
 //##################################################################################################
-nlohmann::json ComplexObjectManager::saveBinary(const std::function<uint64_t(const std::string&)>& addBlob) const noexcept
+void ComplexObjectManager::saveBinary(nlohmann::json& j, const std::function<uint64_t(const std::string&)>& addBlob) const noexcept
 {
-  nlohmann::json j;
   auto& objects   = j["objects"];
   auto& blobIndex = j["blobIndex"];
 
@@ -65,8 +63,11 @@ nlohmann::json ComplexObjectManager::saveBinary(const std::function<uint64_t(con
 
   for(const auto& i : d->complexObjects)
   {
-    currentObjectName = i.first.toString();
-    objects.push_back({{"name", i.first.toString()}, {"data", i.second->saveBinary(addIndexedBlob)}});
+    currentObjectName = i.first.toString();    
+    nlohmann::json jj;
+    jj["name"] = currentObjectName;
+    i.second->saveBinary(jj["data"], addIndexedBlob);
+    objects.push_back(jj);
   }
 
   for(const auto& i : d->complexObjectsJSON)
@@ -78,8 +79,6 @@ nlohmann::json ComplexObjectManager::saveBinary(const std::function<uint64_t(con
     for(const auto& blob : i.second)
       addIndexedBlob(blob);
   }
-
-  return j;
 }
 
 //##################################################################################################
@@ -129,7 +128,7 @@ void ComplexObjectManager::removeComplexObject(const tp_utils::StringID& name)
 }
 
 //##################################################################################################
-AbstractComplexObject* ComplexObjectManager::complexObject(const tp_utils::StringID& name, AbstractComplexObjectFactory* factory)
+ComplexObject* ComplexObjectManager::complexObject(const tp_utils::StringID& name, ComplexObjectFactory* factory)
 {
   {
     auto i = d->complexObjects.find(name);
@@ -137,7 +136,7 @@ AbstractComplexObject* ComplexObjectManager::complexObject(const tp_utils::Strin
       return i->second;
   }
 
-  AbstractComplexObject* obj = nullptr;
+  ComplexObject* obj = nullptr;
   {
     auto i = d->complexObjectsJSON.find(name);
     if(i!=d->complexObjectsJSON.end())

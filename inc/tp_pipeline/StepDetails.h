@@ -1,5 +1,4 @@
-#ifndef tp_pipeline_StepDetails_h
-#define tp_pipeline_StepDetails_h
+#pragma once
 
 #include "tp_pipeline/Globals.h"
 #include "tp_pipeline/Parameter.h"
@@ -7,13 +6,25 @@
 
 #include "tp_utils/RefCount.h"
 
-#include "json.hpp"
-
 #include <unordered_map>
 
 namespace tp_pipeline
 {
 class PipelineDetails;
+
+//##################################################################################################
+struct TP_PIPELINE_SHARED_EXPORT PortMapping
+{
+  tp_utils::StringID portType;
+  tp_utils::StringID portName; //!< The step delegate give each output a name (unique within that delegate)
+  tp_utils::StringID dataName; //!< In the output collection we assign that data a unique name.
+
+  //################################################################################################
+  void saveState(nlohmann::json& j) const;
+
+  //################################################################################################
+  void loadState(const nlohmann::json& j);
+};
 
 //##################################################################################################
 //! The configuration for a single step in an image processing pipeline
@@ -25,7 +36,7 @@ step is returned as the result of the pipeline.
 The StepDetails hold the configuration for one step, this includes the name of the delegate that
 will be used to execute the step.
  */
-class StepDetails
+class TP_PIPELINE_SHARED_EXPORT StepDetails
 {
   friend class PipelineDetails;
   TP_REF_COUNT_OBJECTS("StepDetails");
@@ -56,12 +67,18 @@ public:
   const tp_utils::StringID& delegateName()const;
 
   //################################################################################################
+  const std::pair<double, double>& position() const;
+
+  //################################################################################################
+  void setPosition(const std::pair<double, double>& position);
+
+  //################################################################################################
   //! Returns the pipeline that this step is part of or nullptr.
   PipelineDetails* parent()const;
 
   //################################################################################################
   //! Saves the state of a step
-  nlohmann::json saveBinary(const std::function<uint64_t(const std::string&)>& addBlob)noexcept;
+  void saveBinary(nlohmann::json& j, const std::function<uint64_t(const std::string&)>& addBlob)noexcept;
 
   //################################################################################################
   //! loads the state of a step
@@ -114,19 +131,18 @@ public:
   ComplexObjectManager complexObjectManager;
 
   //################################################################################################
-  void setOutputMapping(const std::vector<std::pair<std::string, std::string>>& outputMapping);
+  //! Sets the mapping between a port on the step delegate and the name of the data in the collection.
+  void setInputMapping(const std::vector<PortMapping>& inputMapping);
 
   //################################################################################################
-  const std::vector<std::pair<std::string, std::string>>& outputMapping() const;
+  const std::vector<PortMapping>& inputMapping() const;
 
   //################################################################################################
-  const std::vector<std::string>& outputNames() const;
+  //! Sets the mapping between a port on the step delegate and the name of the data in the collection.
+  void setOutputMapping(const std::vector<PortMapping>& outputMapping);
 
   //################################################################################################
-  void setOutputNames(const std::vector<std::string>& outputNames);
-
-  //################################################################################################
-  std::string lookupOutputName(const std::string& outputName) const;
+  const std::vector<PortMapping>& outputMapping() const;
 
   //################################################################################################
   void invalidate();
@@ -142,5 +158,3 @@ private:
 };
 
 }
-
-#endif

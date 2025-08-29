@@ -1,5 +1,4 @@
-#ifndef tp_pipeline_ComplexObjectManager_h
-#define tp_pipeline_ComplexObjectManager_h
+#pragma once
 
 #include "tp_pipeline/Globals.h"
 #include "tp_pipeline/Parameter.h"
@@ -13,8 +12,8 @@
 namespace tp_pipeline
 {
 
-class AbstractComplexObjectFactory;
-class AbstractComplexObject;
+class ComplexObjectFactory;
+class ComplexObject;
 
 //##################################################################################################
 class ComplexObjectManager
@@ -32,7 +31,7 @@ public:
 
   //################################################################################################
   //! Saves the state of a step
-  nlohmann::json saveBinary(const std::function<uint64_t(const std::string&)>& addBlob) const noexcept;
+  void saveBinary(nlohmann::json& j,const std::function<uint64_t(const std::string&)>& addBlob) const noexcept;
 
   //################################################################################################
   //! loads the state of a step
@@ -61,10 +60,7 @@ public:
   \param factory - The factory to use to load or create the complex object.
   \return The complex object. Dynamic cast the result and check for nullptr.
   */
-  AbstractComplexObject* complexObject(const tp_utils::StringID& name, AbstractComplexObjectFactory* factory);
+  ComplexObject* complexObject(const tp_utils::StringID& name, ComplexObjectFactory* factory);
 };
 
-
 }
-
-#endif

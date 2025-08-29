@@ -73,6 +73,24 @@ void setInputDirectory(const std::vector<StepDetails*>& steps, const std::string
   }
 }
 
+
+
+//##################################################################################################
+tp_utils::StringID randomId()
+{
+  static std::random_device randomDevice;
+  static std::mt19937 generator{randomDevice()};
+  static const std::string characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+  std::uniform_int_distribution<> distribution(0, characters.size() - 1);
+
+  std::string randomString;
+  for (size_t i=0; i<15; i++)
+    randomString += characters[distribution(generator)];
+
+  return randomString;
+}
+
 REGISTER_CREATE_STEP_DELEGATES;
 
 //##################################################################################################
