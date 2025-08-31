@@ -1,4 +1,4 @@
-#include "tp_pipeline/StepInput.h"
+#include "tp_pipeline/StepContext.h"
 
 #include "tp_data/Collection.h"
 

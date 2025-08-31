@@ -2,7 +2,6 @@
 #include "tp_pipeline/StepDelegate.h"
 #include "tp_pipeline/StepDelegateMap.h"
 #include "tp_pipeline/PipelineDetails.h"
-#include "tp_pipeline/StepOutput.h"
 
 #include "tp_data/Collection.h"
 #include "tp_data/CollectionFactory.h"

@@ -2,7 +2,7 @@
 
 #include "tp_pipeline/Globals.h"
 #include "tp_pipeline/StepDetails.h"
-#include "tp_pipeline/StepInput.h"
+#include "tp_pipeline/StepContext.h"
 
 namespace tp_data
 {

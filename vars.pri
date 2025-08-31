@@ -18,8 +18,8 @@ HEADERS += inc/tp_pipeline/ComplexObjectManager.h
 SOURCES += src/StepDetails.cpp
 HEADERS += inc/tp_pipeline/StepDetails.h
 
-SOURCES += src/StepInput.cpp
-HEADERS += inc/tp_pipeline/StepInput.h
+SOURCES += src/StepContext.cpp
+HEADERS += inc/tp_pipeline/StepContext.h
 
 SOURCES += src/StepOutput.cpp
 HEADERS += inc/tp_pipeline/StepOutput.h

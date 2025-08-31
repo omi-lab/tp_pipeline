@@ -1,6 +1,5 @@
 #include "tp_pipeline/step_delegates/CopyStepDelegate.h"
 #include "tp_pipeline/StepDetails.h"
-#include "tp_pipeline/StepOutput.h"
 
 #include "tp_data/CollectionFactory.h"
 
