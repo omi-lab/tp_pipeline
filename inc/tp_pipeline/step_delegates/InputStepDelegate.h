@@ -2,42 +2,29 @@
 
 #include "tp_pipeline/Globals.h"
 
-#include "tp_utils/TPPixel.h"
-
-#include <unordered_map>
+#include "tp_pipeline/StepDelegate.h"
 
 namespace tp_pipeline
 {
-class StepDelegate;
 
 //##################################################################################################
-struct DataTypeProperties
-{
-  tp_utils::StringID type;
-  TPPixel color; //!< Color used to draw the data in node graphs.
-};
-
-//##################################################################################################
-class StepDelegateMap
+class InputStepDelegate: public StepDelegate
 {
 public:
   //################################################################################################
-  StepDelegateMap();
+  InputStepDelegate(const tp_utils::StringID& name, const std::vector<PortDetails>& outPorts);
 
   //################################################################################################
-  ~StepDelegateMap();
+  void fixupParameters(StepDetails* stepDetails) const override;
 
   //################################################################################################
-  void addStepDelegate(tp_pipeline::StepDelegate* stepDelegate);
+  virtual size_t nFiles(StepDetails* stepDetails) const = 0;
 
   //################################################################################################
-  const tp_pipeline::StepDelegate* stepDelegate(const tp_utils::StringID& name) const;
+  std::string fileDirectory(StepDetails* stepDetails) const;
 
   //################################################################################################
-  std::vector<tp_utils::StringID> stepDelegateNames() const;
-
-private:
-  std::unordered_map<tp_utils::StringID, tp_pipeline::StepDelegate*> m_stepDelegates;
+  size_t fileIndex(StepDetails* stepDetails) const;
 };
 
 }

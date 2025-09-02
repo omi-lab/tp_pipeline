@@ -29,6 +29,8 @@ TP_DEFINE_ID(                fileDirectorySID,                   "File directory
 TP_DEFINE_ID(                    fileIndexSID,                       "File index");
 TP_DEFINE_ID(                   collectionSID,                       "Collection");
 TP_DEFINE_ID(                  memberNamesSID,                     "Member names");
+TP_DEFINE_ID(                       inputsSID,                           "Inputs");
+TP_DEFINE_ID(                      outputsSID,                          "Outputs");
 
 //##################################################################################################
 void createStepDelegates(StepDelegateMap& stepDelegates, const tp_data::CollectionFactory* collectionFactory)

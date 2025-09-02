@@ -47,6 +47,12 @@ HEADERS += inc/tp_pipeline/step_delegates/NoneStepDelegate.h
 SOURCES += src/step_delegates/CopyStepDelegate.cpp
 HEADERS += inc/tp_pipeline/step_delegates/CopyStepDelegate.h
 
+SOURCES += src/step_delegates/InputStepDelegate.cpp
+HEADERS += inc/tp_pipeline/step_delegates/InputStepDelegate.h
+
+SOURCES += src/step_delegates/OutputStepDelegate.cpp
+HEADERS += inc/tp_pipeline/step_delegates/OutputStepDelegate.h
+
 #-- Complex objects --------------------------------------------------------------------------------
 
 SOURCES += src/complex_objects/CollectionComplexObject.cpp

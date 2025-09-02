@@ -36,6 +36,8 @@ TP_DECLARE_ID(                fileDirectorySID,                   "File director
 TP_DECLARE_ID(                    fileIndexSID,                       "File index");
 TP_DECLARE_ID(                   collectionSID,                       "Collection");
 TP_DECLARE_ID(                  memberNamesSID,                     "Member names");
+TP_DECLARE_ID(                       inputsSID,                           "Inputs");
+TP_DECLARE_ID(                      outputsSID,                          "Outputs");
 
 //##################################################################################################
 //! Add the step delegates that this module provides to the StepDelegateMap

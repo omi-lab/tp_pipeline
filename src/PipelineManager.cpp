@@ -91,6 +91,9 @@ struct PipelineManager::Private
   //################################################################################################
   void rebuildContexts(bool fixupParameters=true)
   {
+    ignoreCallbacks=true;
+    TP_CLEANUP([&]{ignoreCallbacks=false;});
+
     const auto& steps = pipelineDetails->steps();
     requiredSteps.clear();
     requiredSteps.reserve(steps.size());
@@ -110,12 +113,58 @@ struct PipelineManager::Private
 
         if(fixupParameters)
         {
-          ignoreCallbacks=true;
           stepContext.stepDelegate->fixupParameters(stepDetails);
-          ignoreCallbacks=false;
+
+          {
+            bool changed=false;
+            std::vector<PortMapping> outputMapping = stepDetails->outputMapping();
+
+            const auto& outPorts = stepContext.stepDelegate->outPorts();
+            outputMapping.resize(outPorts.size());
+            for(size_t c=0; c<outPorts.size(); c++)
+            {
+              auto& m = outputMapping.at(c);
+              const auto& p = outPorts.at(c);
+              if(m.portName != p.name || m.portType != p.type)
+              {
+                changed = true;
+                m.portName = p.name;
+                m.portType = p.type;
+                m.dataName = randomId();
+              }
+            }
+
+            if(changed)
+              stepDetails->setOutputMapping(outputMapping);
+          }
+
+          {
+            bool changed=false;
+            std::vector<PortMapping> inputMapping = stepDetails->inputMapping();
+
+            const auto& inPorts = stepContext.stepDelegate->inPorts();
+            inputMapping.resize(inPorts.size());
+            for(size_t c=0; c<inPorts.size(); c++)
+            {
+              auto& m = inputMapping.at(c);
+              const auto& p = inPorts.at(c);
+              if(m.portName != p.name || m.portType != p.type)
+              {
+                changed = true;
+                m.portName = p.name;
+                m.portType = p.type;
+                m.dataName = {};
+              }
+            }
+
+            if(changed)
+              stepDetails->setInputMapping(inputMapping);
+          }
         }
       }
     }
+
+    pipelineDetails->clearDanglingInputs();
   }
 
   //################################################################################################
