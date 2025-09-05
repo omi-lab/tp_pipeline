@@ -1,13 +1,8 @@
 #pragma once
 
 #include "tp_pipeline/Globals.h"
-#include "tp_pipeline/Parameter.h"
 
-#include "tp_utils/RefCount.h"
-
-#include "json.hpp"
-
-#include <unordered_map>
+#include "json.hpp" // IWYU pragma: keep
 
 namespace tp_pipeline
 {
@@ -16,7 +11,7 @@ class ComplexObjectFactory;
 class ComplexObject;
 
 //##################################################################################################
-class ComplexObjectManager
+class TP_PIPELINE_SHARED_EXPORT ComplexObjectManager
 {
   TP_DQ;
 public:

@@ -4,49 +4,48 @@
 #include "tp_pipeline/StepDetails.h"
 #include "tp_pipeline/StepContext.h"
 
+#include "tp_utils/CallbackCollection.h"
+
 namespace tp_data
 {
 class Collection;
-class CollectionFactory;
 }
 
 namespace tp_pipeline
 {
-class StepDelegate;
-
+class PipelineManager;
 
 //##################################################################################################
-//! This uses delegates to manage and execute a pipeline.
-class TP_PIPELINE_SHARED_EXPORT PipelineManager
+//! Keeps a copy of data from an execution run of a pipeline.
+class TP_PIPELINE_SHARED_EXPORT PipelineResultsManager
 {
   TP_DQ;
 public:
   //################################################################################################
-  PipelineManager(PipelineDetails* pipelineDetails,
-                  const StepDelegateMap* stepDelegates,
-                  const tp_data::CollectionFactory* collectionFactory,
-                  bool fixupParameters=true);
+  PipelineResultsManager(PipelineDetails* pipelineDetails);
 
   //################################################################################################
-  ~PipelineManager();
+  ~PipelineResultsManager();
 
   //################################################################################################
   PipelineDetails* pipelineDetails() const;
 
   //################################################################################################
-  void startExecution(StepDetails* finalStep=nullptr);
+  void copyResultsFromManager(const PipelineManager& pipelineManager);
 
   //################################################################################################
-  StepContext* takeNextAvailableStep();
+  std::shared_ptr<tp_data::Collection> stepInput(StepDetails* stepDetails) const;
 
   //################################################################################################
-  void returnCompletedStep(StepContext* stepContext);
+  std::shared_ptr<tp_data::Collection> stepOutput(StepDetails* stepDetails) const;
 
   //################################################################################################
-  StepContext* stepContext(StepDetails* stepDetails) const;
+  void stepInputOutput(StepDetails* stepDetails,
+                       std::shared_ptr<tp_data::Collection>& stepInput,
+                       std::shared_ptr<tp_data::Collection>& stepOutput) const;
 
   //################################################################################################
-  const std::vector<StepContext>& stepContexts() const;
+  tp_utils::CallbackCollection<void()> changed;
 };
 
 }

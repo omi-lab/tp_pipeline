@@ -2,14 +2,14 @@
 
 #include "tp_pipeline/Globals.h"
 
-#include "json.hpp"
+#include "json.hpp" // IWYU pragma: keep
 
 namespace tp_pipeline
 {
 class ComplexObject;
 
 //##################################################################################################
-class ComplexObjectFactory
+class TP_PIPELINE_SHARED_EXPORT ComplexObjectFactory
 {
   ComplexObjectFactory( const ComplexObjectFactory& ) = delete;
   ComplexObjectFactory& operator=(const ComplexObjectFactory&) = delete;

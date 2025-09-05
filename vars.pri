@@ -33,6 +33,9 @@ HEADERS += inc/tp_pipeline/Parameter.h
 SOURCES += src/PipelineManager.cpp
 HEADERS += inc/tp_pipeline/PipelineManager.h
 
+SOURCES += src/PipelineResultsManager.cpp
+HEADERS += inc/tp_pipeline/PipelineResultsManager.h
+
 SOURCES += src/StepDelegate.cpp
 HEADERS += inc/tp_pipeline/StepDelegate.h
 

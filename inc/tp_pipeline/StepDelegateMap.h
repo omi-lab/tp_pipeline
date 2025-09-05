@@ -11,14 +11,14 @@ namespace tp_pipeline
 class StepDelegate;
 
 //##################################################################################################
-struct DataTypeProperties
+struct TP_PIPELINE_SHARED_EXPORT DataTypeProperties
 {
   tp_utils::StringID type;
   TPPixel color; //!< Color used to draw the data in node graphs.
 };
 
 //##################################################################################################
-class StepDelegateMap
+class TP_PIPELINE_SHARED_EXPORT StepDelegateMap
 {
 public:
   //################################################################################################

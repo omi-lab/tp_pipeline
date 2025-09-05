@@ -12,16 +12,6 @@ namespace tp_pipeline
 {
 
 //##################################################################################################
-bool StepContext::dependenciesMet() const
-{
-  for(auto s : dependsOn)
-    if(!s->runComplete)
-      return false;
-
-  return true;
-}
-
-//##################################################################################################
 struct PipelineManager::Private
 {
   Q* q;
@@ -173,6 +163,7 @@ struct PipelineManager::Private
     for(auto& stepContext : stepContexts)
     {
       stepContext.dependsOn.clear();
+      stepContext.inputDataSources.clear();
 
       std::unordered_set<tp_utils::StringID> requiredData;
       for(const auto& m : stepContext.stepDetails->inputMapping())
@@ -181,11 +172,15 @@ struct PipelineManager::Private
 
       for(auto& s : stepContexts)
       {
+        if(&s == &stepContext)
+          continue;
+
         for(const auto& m : s.stepDetails->outputMapping())
         {
           if(tpContains(requiredData, m.dataName))
           {
             stepContext.dependsOn.insert(&s);
+            stepContext.inputDataSources.emplace_back(&s, m.dataName);
             break;
           }
         }
@@ -259,7 +254,24 @@ StepContext* PipelineManager::takeNextAvailableStep()
     {
       s->runStarted = true;
 
-      // Gather the input data here...
+      for(const auto& m : s->stepDetails->inputMapping())
+      {
+        if(!m.dataName.isValid())
+          continue;
+
+        for(const auto& f : s->inputDataSources)
+        {
+          if(f.second == m.dataName)
+          {
+            auto member = f.first->stepOutput->output()->member(m.dataName);
+            if(member)
+              s->stepInput->addMember(member);
+            else
+              s->stepOutput->addError("Failed to copy member: " + m.dataName.toString());
+            break;
+          }
+        }
+      }
 
       return s;
     }
@@ -278,6 +290,12 @@ void PipelineManager::returnCompletedStep(StepContext* stepContext)
 StepContext* PipelineManager::stepContext(StepDetails* stepDetails) const
 {
   return d->stepContextFor(stepDetails);
+}
+
+//##################################################################################################
+const std::vector<StepContext>& PipelineManager::stepContexts() const
+{
+  return d->stepContexts;
 }
 
 }

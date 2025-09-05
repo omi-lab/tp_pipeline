@@ -13,7 +13,7 @@ struct StepOutput::Private
 {
   const StepDelegate* stepDelegate;
   StepDetails* stepDetails;
-  tp_data::Collection output;
+  std::shared_ptr<tp_data::Collection> output{std::make_shared<tp_data::Collection>()};
 
   std::vector<std::shared_ptr<tp_data::AbstractMember>> unusedOutput;
   std::vector<tp_utils::StringID> populatedPorts;
@@ -74,14 +74,15 @@ bool StepOutput::addMember(const tp_utils::StringID& portName, const std::shared
             return false;
           }
 
-          if(d->output.member(outputMapping.dataName) != nullptr)
+          if(d->output->member(outputMapping.dataName) != nullptr)
           {
             addError("Output data already contains: " + outputMapping.dataName.toString());
             return false;
           }
 
           added=true;
-          d->output.addMember(member);
+          member->setName(outputMapping.dataName);
+          d->output->addMember(member);
           return true;
         }
       }
@@ -98,7 +99,13 @@ bool StepOutput::addMember(const tp_utils::StringID& portName, const std::shared
 //##################################################################################################
 void StepOutput::addError(const std::string& error)
 {
-  d->output.addError(error);
+  d->output->addError(error);
+}
+
+//##################################################################################################
+const std::shared_ptr<tp_data::Collection>& StepOutput::output() const
+{
+  return d->output;
 }
 
 }

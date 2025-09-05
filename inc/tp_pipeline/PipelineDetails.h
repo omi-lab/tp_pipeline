@@ -9,7 +9,7 @@ namespace tp_pipeline
 {
 
 //##################################################################################################
-class PipelineDetails
+class TP_PIPELINE_SHARED_EXPORT PipelineDetails
 {
   TP_DQ;
 public:
